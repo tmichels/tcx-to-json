@@ -68,18 +68,32 @@
                 <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>xjc</id>
+                        <id>tc2</id>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
+                        <configuration>
+                            <sources>
+                                <!--Gedownload op 20 okt 2023 van https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd-->
+                                <source>src/main/resources/schemas/TrainingCenterDatabasev2-edited.xsd</source>
+                            </sources>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>x</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <!--Gedownload op 20 okt 2023 van https://www8.garmin.com/xmlschemas/ActivityExtensionv2.xsd-->
+                                <source>src/main/resources/schemas/ActivityExtensionv2.xsd</source>
+                            </sources>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <sources>
-                        <!--Gedownload op 20 okt 2023 van https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd-->
-                        <source>src/main/resources/schemas/TrainingCenterDatabasev2.xsd</source>
-                    </sources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
