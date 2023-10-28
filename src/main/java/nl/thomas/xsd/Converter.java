@@ -1,6 +1,6 @@
 package nl.thomas.xsd;
 
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
+import com.garmin.xmlschemas.trainingcenterdatabase.v2.*;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
@@ -21,7 +21,9 @@ public class Converter {
         Source source = createSourceFromString(tcxContent);
 
         JAXBElement<TrainingCenterDatabaseT> root = unmarshaller.unmarshal(source, TrainingCenterDatabaseT.class);
-        return root.getValue();
+        TrainingCenterDatabaseT trainingCenterDatabaseT = root.getValue();
+        TrackpointExtensionHandler.setTrackpointSpeedFromExtension(trainingCenterDatabaseT);
+        return trainingCenterDatabaseT;
     }
 
     private Unmarshaller createUnmarshaller() throws JAXBException {
