@@ -2,11 +2,7 @@
 <xsd:schema xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             targetNamespace="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
-            xmlns:tc2="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
-            elementFormDefault="qualified"
-            xmlns:x="http://www.garmin.com/xmlschemas/ActivityExtension/v2">
-    <xsd:import namespace="http://www.garmin.com/xmlschemas/ActivityExtension/v2"
-                schemaLocation="ActivityExtensionv2.xsd"/>
+            xmlns:tc2="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" elementFormDefault="qualified">
     <xsd:annotation>
         <xsd:documentation>This schema defines the Garmin Training Center file format.</xsd:documentation>
     </xsd:annotation>
@@ -394,6 +390,11 @@
             <xsd:element name="HeartRateBpm" type="HeartRateInBeatsPerMinute_t" minOccurs="0"/>
             <xsd:element name="Cadence" type="CadenceValue_t" minOccurs="0"/>
             <xsd:element name="SensorState" type="SensorState_t" minOccurs="0"/>
+
+            <!--Ideally speed comes from ActivityExtensionsv2.xsd. But I was not able to properly import it,
+            so I copied Speed as the only value from the extensions that is available in my data.-->
+            <xsd:element name="Speed" type="xsd:double" minOccurs="0"/>
+
             <xsd:element name="Extensions" type="Extensions_t" minOccurs="0">
                 <xsd:annotation>
                     <xsd:documentation>You can extend Training Center by adding your own elements from another schema
@@ -850,7 +851,6 @@
     </xsd:simpleType>
     <xsd:complexType name="Extensions_t">
         <xsd:sequence>
-            <xsd:element ref="x:TPX"/>
             <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
                 <xsd:annotation>
                     <xsd:documentation>You can extend Training Center by adding your own elements from another schema
