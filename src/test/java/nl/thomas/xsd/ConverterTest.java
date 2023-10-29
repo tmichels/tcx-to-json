@@ -46,13 +46,13 @@ class ConverterTest {
                 trainingCenterDatabaseT
                         .getActivities()
                         .getActivity()
-                        .getFirst()
+                        .get(0)
                         .getLap()
-                        .getFirst()
+                        .get(0)
                         .getTrack()
-                        .getFirst()
+                        .get(0)
                         .getTrackpoint()
-                        .getFirst()
+                        .get(0)
                         .getTime() // The class generated on the basis of the SXD is XMLGregorianCalendar
                         .toGregorianCalendar()
                         .toZonedDateTime())
