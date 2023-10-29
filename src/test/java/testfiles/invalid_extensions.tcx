@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:x="http://www.garmin.com/xmlschemas/ActivityExtension/v2"  xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd">
+    <Activities>
+        <Activity Sport="Running">
+            <Id>2023-10-01T10:06:53Z</Id>
+            <Lap StartTime="2023-10-01T10:06:53Z">
+                <TotalTimeSeconds>140</TotalTimeSeconds>
+                <DistanceMeters>494.73</DistanceMeters>
+                <MaximumSpeed>4.12</MaximumSpeed>
+                <Calories>36</Calories>
+                <Intensity>Active</Intensity>
+                <TriggerMethod>Distance</TriggerMethod>
+                <Track>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:53Z</Time>
+                        <Position><LatitudeDegrees>52.084885</LatitudeDegrees><LongitudeDegrees>5.112345</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.9</AltitudeMeters>
+                        <DistanceMeters>0.0</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>75</Value>
+                        </HeartRateBpm>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:54Z</Time>
+                        <Position><LatitudeDegrees>52.084895</LatitudeDegrees><LongitudeDegrees>5.112391</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.9</AltitudeMeters>
+                        <DistanceMeters>0.0</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>78</Value>
+                        </HeartRateBpm>
+                        <Extensions><x:OTHER><Speed>0.0</Speed></x:OTHER></Extensions>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:55Z</Time>
+                        <Position><LatitudeDegrees>52.084906</LatitudeDegrees><LongitudeDegrees>5.112438</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.9</AltitudeMeters>
+                        <DistanceMeters>3.9</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>79</Value>
+                        </HeartRateBpm>
+                        <Extensions><x:TPX><NO_SPEED>3.17</NO_SPEED></x:TPX></Extensions>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:56Z</Time>
+                        <Position><LatitudeDegrees>52.084915</LatitudeDegrees><LongitudeDegrees>5.112486</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.9</AltitudeMeters>
+                        <DistanceMeters>7.69</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>80</Value>
+                        </HeartRateBpm>
+                        <Extensions><x:TPX></x:TPX></Extensions>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:57Z</Time>
+                        <Position><LatitudeDegrees>52.084923</LatitudeDegrees><LongitudeDegrees>5.112535</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.9</AltitudeMeters>
+                        <DistanceMeters>11.49</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>81</Value>
+                        </HeartRateBpm>
+                        <Extensions></Extensions>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:58Z</Time>
+                        <Position><LatitudeDegrees>52.08493</LatitudeDegrees><LongitudeDegrees>5.112583</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.8</AltitudeMeters>
+                        <DistanceMeters>15.28</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>82</Value>
+                        </HeartRateBpm>
+                        <Extensions><x:TPX><Speed>3.38</Speed></x:TPX></Extensions>
+                    </Trackpoint>
+                    <Trackpoint>
+                        <Time>2023-10-01T10:06:59Z</Time>
+                        <Position><LatitudeDegrees>52.084935</LatitudeDegrees><LongitudeDegrees>5.112632</LongitudeDegrees></Position>
+                        <AltitudeMeters>4.8</AltitudeMeters>
+                        <DistanceMeters>19.05</DistanceMeters>
+                        <HeartRateBpm>
+                            <Value>83</Value>
+                        </HeartRateBpm>
+                        <Extensions><x:TPX><Speed>3.42</Speed><Speed2>0.0</Speed2></x:TPX></Extensions>
+                    </Trackpoint>
+                </Track>
+            </Lap>
+            <Notes>Activity 77b7ca63f05025210ed79bb8f11dff0a</Notes>
+            <Creator xsi:type="Device_t">
+                <Name>TomTom GPS Sports Watch with barometer</Name>
+                <UnitId>0</UnitId>
+                <ProductID>2015</ProductID>
+                <Version>
+                    <VersionMajor>2</VersionMajor>
+                    <VersionMinor>2</VersionMinor>
+                    <BuildMajor>421</BuildMajor>
+                    <BuildMinor>0</BuildMinor>
+                </Version>
+            </Creator>
+            <Extensions xsi:type="Extensions_t">
+                <x:LX>
+                    <ActiveSeconds>2869</ActiveSeconds>
+                    <ElapsedSeconds>2870</ElapsedSeconds>
+                    <DistanceMeters>10139</DistanceMeters>
+                    <AvgSpeed>3.53</AvgSpeed>
+                    <KiloCalories>745</KiloCalories>
+                    <StepCount>7976</StepCount>
+                    <ClimbMeters>41</ClimbMeters>
+                </x:LX>
+            </Extensions>
+        </Activity>
+    </Activities>
+    <Author xsi:type="Application_t">
+        <Name>TomTom MySports Service</Name>
+        <Build>
+            <Version>
+                <VersionMajor>2</VersionMajor>
+                <VersionMinor>2</VersionMinor>
+                <BuildMajor>421</BuildMajor>
+                <BuildMinor>0</BuildMinor>
+            </Version>
+        </Build>
+        <LangID>en</LangID>
+        <PartNumber>000-00000-00</PartNumber>
+    </Author>
+</TrainingCenterDatabase>

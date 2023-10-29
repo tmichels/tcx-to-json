@@ -22,7 +22,7 @@ public class TrackpointExtensionHandler {
 
     private Double getSpeedFromExtensions(TrackpointT trackpointT) {
         XMLGregorianCalendar trackpointTime = trackpointT.getTime();
-        if (trackpointT.getExtensions() == null || trackpointT.getExtensions().getAny() == null) {
+        if (trackpointT.getExtensions() == null || trackpointT.getExtensions().getAny() == null || trackpointT.getExtensions().getAny().isEmpty()) {
             log.warn("No extensions found in trackpoint {}", trackpointTime);
             return null;
         }
@@ -86,7 +86,7 @@ public class TrackpointExtensionHandler {
     }
 
     private void warnForUnexpectedExtensionNodes(Element element, XMLGregorianCalendar trackpointTime) {
-        log.warn("Trackpoint {} had another other extension \"{}\" than the expected TPX extension",
+        log.warn("Trackpoint {} had another other extension \"{}\" than the expected \"x:TPX\" extension",
                 trackpointTime,
                 element.getNodeName());
     }
