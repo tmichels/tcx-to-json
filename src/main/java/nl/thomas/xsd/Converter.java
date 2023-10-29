@@ -5,6 +5,7 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Source;
@@ -14,7 +15,14 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
+@Slf4j
 public class Converter {
+
+    private final TrackpointExtensionHandler trackpointExtensionHandler;
+
+    public Converter(TrackpointExtensionHandler trackpointExtensionHandler) {
+        this.trackpointExtensionHandler = trackpointExtensionHandler;
+    }
 
     public TrainingCenterDatabaseT convert(String tcxContent) throws JAXBException {
         Unmarshaller unmarshaller = createUnmarshaller();
@@ -22,7 +30,9 @@ public class Converter {
 
         JAXBElement<TrainingCenterDatabaseT> root = unmarshaller.unmarshal(source, TrainingCenterDatabaseT.class);
         TrainingCenterDatabaseT trainingCenterDatabaseT = root.getValue();
-        TrackpointExtensionHandler.setTrackpointSpeedFromExtension(trainingCenterDatabaseT);
+        trackpointExtensionHandler.setTrackpointSpeedFromExtension(trainingCenterDatabaseT);
+        log.info("Converted text to TrainingCenterDatabaseT object with {} trackpoints",
+                TrainingCenterDatabaseExtractor.extractTrackpoints(trainingCenterDatabaseT).size());
         return trainingCenterDatabaseT;
     }
 
