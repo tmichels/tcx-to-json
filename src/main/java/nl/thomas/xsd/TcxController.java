@@ -25,8 +25,8 @@ public class TcxController {
     @PostMapping("file")
     public TrainingCenterDatabaseT file(@RequestBody String location) throws IOException, JAXBException {
         List<String> lines = Files.readAllLines(Path.of(location));
-        String collect = String.join("\n", lines);
-        return converter.convert(collect);
+        String fileContent = String.join("\n", lines);
+        return converter.convert(fileContent);
     }
 
     @PostMapping("file-content")
