@@ -75,7 +75,7 @@
                         <configuration>
                             <sources>
                                 <!--Gedownload op 20 okt 2023 van https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd-->
-                                <source>src/main/resources/schemas/TrainingCenterDatabasev2-edited.xsd</source>
+                                <source>src/main/resources/schemas/TrainingCenterDatabasev2.xsd</source>
                             </sources>
                             <clearOutputDir>false</clearOutputDir>
                         </configuration>
