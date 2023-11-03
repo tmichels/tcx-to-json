@@ -50,19 +50,42 @@ public class TrackpointExtensionHandler {
     private String getRawXmlStringForExtension(TrackpointT trackpointT) {
         Element trackpointExtension = (Element) trackpointT.getExtensions().getAny().getFirst();
         Document document = trackpointExtension.getOwnerDocument();
-        DOMImplementationLS domImplLS = (DOMImplementationLS) document
-                .getImplementation();
+        DOMImplementationLS domImplLS = (DOMImplementationLS) document.getImplementation();
         LSSerializer serializer = domImplLS.createLSSerializer();
-        return serializer.writeToString(trackpointExtension);
+        String rawXml = serializer.writeToString(trackpointExtension);
+        return correctRawXml(rawXml);
+    }
+
+    /**
+     * Rewrites for example the bolow XML
+     * <?xml version="1.0" encoding="UTF-16"?>
+     * <x:TPX xmlns:x="http://www.garmin.com/xmlschemas/ActivityExtension/v2" xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+     *     <Speed xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">0.0</Speed>
+     * </x:TPX>
+     *
+     * <x:TPX xmlns:x="http://www.garmin.com/xmlschemas/ActivityExtension/v2">
+     *     <Speed xmlns="http://www.garmin.com/xmlschemas/ActivityExtension/v2">0.0</Speed>
+     * </x:TPX>
+     *
+     * @param rawXml: Somehow the parser misreads the values of the extensions and interprets them as
+     *              <Speed xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">0.0</Speed>
+     *              where it should be
+     *              <Speed xmlns="http://www.garmin.com/xmlschemas/ActivityExtension/v2">0.0</Speed>
+     * @return corrected XML without unnecessary headers (this allows generic replacement of tag in case other extensions are provided)
+     */
+    private String correctRawXml(String rawXml) {
+        return rawXml
+                .replace(
+                        "<?xml version=\"1.0\" encoding=\"UTF-16\"?><x:TPX xmlns:x=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\" xmlns=\"http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">",
+                        "<x:TPX xmlns:x=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\">")
+                .replace(
+                        "http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2",
+                        "http://www.garmin.com/xmlschemas/ActivityExtension/v2");
     }
 
     private ActivityTrackpointExtensionT convertXmlToObject(String rawXml) throws JAXBException {
-        String correctedXml = rawXml.replace(
-                "Speed xmlns=\"http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2\"",
-                "Speed xmlns=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\"");
-        correctedXml = correctedXml.replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>", "");
         Unmarshaller unmarshaller = JAXBContext.newInstance(ActivityTrackpointExtensionT.class).createUnmarshaller();
-        InputStream stream = new ByteArrayInputStream(correctedXml.getBytes(StandardCharsets.UTF_8));
+        InputStream stream = new ByteArrayInputStream(rawXml.getBytes(StandardCharsets.UTF_8));
         Source source = new StreamSource(stream);
 
         JAXBElement<ActivityTrackpointExtensionT> root = unmarshaller.unmarshal(source, ActivityTrackpointExtensionT.class);
