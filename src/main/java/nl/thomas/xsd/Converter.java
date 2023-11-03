@@ -30,7 +30,7 @@ public class Converter {
 
         JAXBElement<TrainingCenterDatabaseT> root = unmarshaller.unmarshal(source, TrainingCenterDatabaseT.class);
         TrainingCenterDatabaseT trainingCenterDatabaseT = root.getValue();
-        trackpointExtensionHandler.setTrackpointSpeedFromExtension(trainingCenterDatabaseT);
+        trackpointExtensionHandler.setTrackpointExtensions(trainingCenterDatabaseT);
         log.info("Converted text to TrainingCenterDatabaseT object with {} trackpoints",
                 TrainingCenterDatabaseExtractor.extractTrackpoints(trainingCenterDatabaseT).size());
         return trainingCenterDatabaseT;

@@ -27,7 +27,7 @@ import java.util.Optional;
 @Component
 public class TrackpointExtensionHandler {
 
-    void setTrackpointSpeedFromExtension(TrainingCenterDatabaseT trainingCenterDatabaseT) {
+    void setTrackpointExtensions(TrainingCenterDatabaseT trainingCenterDatabaseT) {
         List<TrackpointT> trackpoints = TrainingCenterDatabaseExtractor.extractTrackpoints(trainingCenterDatabaseT);
         trackpoints.forEach(this::replaceIncorrectlyParsedExtension);
     }
