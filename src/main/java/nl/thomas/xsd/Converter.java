@@ -1,10 +1,8 @@
 package nl.thomas.xsd;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 @Component
@@ -22,23 +19,24 @@ public class Converter {
 
     public TrainingCenterDatabaseT convert(String tcxContent) throws JAXBException {
         String correctedContent = TomTomCorrector.correct(tcxContent);
-        Unmarshaller unmarshaller = createUnmarshaller();
-        Source source = createSourceFromString(correctedContent);
-
-        JAXBElement<TrainingCenterDatabaseT> root = unmarshaller.unmarshal(source, TrainingCenterDatabaseT.class);
-        TrainingCenterDatabaseT trainingCenterDatabaseT = root.getValue();
+        TrainingCenterDatabaseT trainingCenterDatabaseT = unMarshal(correctedContent);
         log.info("Converted text to TrainingCenterDatabaseT object with {} trackpoints",
-                TrainingCenterDatabaseExtractor.extractTrackpoints(trainingCenterDatabaseT).size());
+                TrainingCenterDatabaseExtractor
+                        .extractTrackpoints(trainingCenterDatabaseT)
+                        .size());
         return trainingCenterDatabaseT;
     }
 
-    private Unmarshaller createUnmarshaller() throws JAXBException {
-        return JAXBContext.newInstance(TrainingCenterDatabaseT.class, ActivityTrackpointExtensionT.class, ExtensionsT.class).createUnmarshaller();
-    }
+    private TrainingCenterDatabaseT unMarshal(String correctedContent) throws JAXBException {
+        Unmarshaller unmarshaller = JAXBContext
+                .newInstance(TrainingCenterDatabaseT.class, ActivityTrackpointExtensionT.class)
+                .createUnmarshaller();
+        Source source = new StreamSource(
+                new ByteArrayInputStream(
+                        correctedContent.getBytes(
+                                StandardCharsets.UTF_8)));
 
-    private Source createSourceFromString(String tcxContent) {
-        InputStream stream = new ByteArrayInputStream(tcxContent.getBytes(StandardCharsets.UTF_8));
-        return new StreamSource(stream);
+        return unmarshaller.unmarshal(source, TrainingCenterDatabaseT.class).getValue();
     }
 
 }
