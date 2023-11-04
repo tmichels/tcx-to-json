@@ -23,8 +23,6 @@ class ConverterTest {
 
     @InjectMocks
     Converter converter;
-    @Mock
-    TrackpointExtensionHandler trackpointExtensionHandler;
 
     @Test
     void invalidContent_convert_jaxbException() throws IOException {

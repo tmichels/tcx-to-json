@@ -20,12 +20,6 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class Converter {
 
-    private final TrackpointExtensionHandler trackpointExtensionHandler;
-
-    public Converter(TrackpointExtensionHandler trackpointExtensionHandler) {
-        this.trackpointExtensionHandler = trackpointExtensionHandler;
-    }
-
     public TrainingCenterDatabaseT convert(String tcxContent) throws JAXBException {
         String correctedContent = TomTomCorrector.correct(tcxContent);
         Unmarshaller unmarshaller = createUnmarshaller();
