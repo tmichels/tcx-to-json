@@ -58,7 +58,7 @@ class TrackpointExtensionHandlerTest {
 
         assertThat(capturedOutput.getOut()).contains("ActivityTrackpointExtension for 2023-10-01T10:06:55Z was correctly parsed, but all values are null. Raw XML: <x:TPX xmlns:x=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\"><NO_SPEED xmlns=\"http://www.garmin.com/xmlschemas/ActivityExtension/v2\">3.17</NO_SPEED></x:TPX>");
         assertThat(trackpointT.getTime().toGregorianCalendar().toZonedDateTime()).isEqualTo(ZonedDateTime.parse("2023-10-01T10:06:55Z"));
-        assertThat(((ActivityTrackpointExtensionT) trackpointT.getExtensions().getAny().getFirst()).getSpeed()).isNull();
+        assertThat(((ActivityTrackpointExtensionT) trackpointT.getExtensions().getAny().get(0)).getSpeed()).isNull();
     }
 
     @Test
@@ -76,7 +76,7 @@ class TrackpointExtensionHandlerTest {
 
         assertThat(capturedOutput.getOut()).doesNotContain("2023-10-01T10:06:59Z");
         assertThat(trackpointT.getTime().toGregorianCalendar().toZonedDateTime()).isEqualTo(ZonedDateTime.parse("2023-10-01T10:06:59Z"));
-        assertThat(((ActivityTrackpointExtensionT) trackpointT.getExtensions().getAny().getFirst()).getSpeed()).isEqualTo(3.42);
+        assertThat(((ActivityTrackpointExtensionT) trackpointT.getExtensions().getAny().get(0)).getSpeed()).isEqualTo(3.42);
     }
 
     @Test

@@ -37,7 +37,7 @@ class ConverterTest {
 
     @Test
     void validContent_convert_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
-        Path path = Path.of("src/test/java/testfiles/valid.tcx");
+        Path path = Path.of("src/test/java/testfiles/tomtom_export.tcx");
         String fileContent = String.join("", Files.readAllLines(path));
 
         TrainingCenterDatabaseT trainingCenterDatabaseT = converter.convert(fileContent);

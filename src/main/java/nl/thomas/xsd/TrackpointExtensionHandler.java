@@ -52,7 +52,7 @@ public class TrackpointExtensionHandler {
     }
 
     private String getRawXmlStringForExtension(TrackpointT trackpointT) {
-        Element trackpointExtension = (Element) trackpointT.getExtensions().getAny().getFirst();
+        Element trackpointExtension = (Element) trackpointT.getExtensions().getAny().get(0);
         Document document = trackpointExtension.getOwnerDocument();
         DOMImplementationLS domImplLS = (DOMImplementationLS) document.getImplementation();
         LSSerializer serializer = domImplLS.createLSSerializer();
