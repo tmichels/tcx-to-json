@@ -28,7 +28,7 @@ public class XsdApplication {
 
         @Override
         public void run(String... args) throws JAXBException, IOException {
-            tcxController.file("src/test/java/testfiles/tomtom_export.tcx");
+            tcxController.file("src/test/java/testfiles/export_tomtom.tcx");
         }
     }
 
