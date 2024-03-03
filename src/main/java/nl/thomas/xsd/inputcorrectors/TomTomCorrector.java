@@ -1,8 +1,8 @@
-package nl.thomas.xsd;
+package nl.thomas.xsd.inputcorrectors;
 
 import java.util.regex.Pattern;
 
-public class TomTomCorrector {
+public abstract class TomTomCorrector {
 
     /**
      * Exports from TomTom contain a systematic error: the objects in the ActivityExtensionv2.xsd schema are not prefixed
@@ -13,8 +13,15 @@ public class TomTomCorrector {
     }
 
     private static String correctSpeedTag(String tcxContent) {
-        String withCorrectedPrefix = replaceRegex(tcxContent, "<Extensions>\n* *<x:TPX>\n* *<Speed>", "<Extensions><x:TPX><x:Speed>");
-        return replaceRegex(withCorrectedPrefix, "</Speed>\n* *</x:TPX>\n* *</Extensions>", "</x:Speed></x:TPX></Extensions>");
+        String withCorrectedPrefix = replaceRegex(
+                tcxContent,
+                "<Extensions>\n* *<x:TPX>\n* *<Speed>",
+                "<Extensions><x:TPX><x:Speed>");
+        String withCorrectedPrefixAndSuffix = replaceRegex(
+                withCorrectedPrefix,
+                "</Speed>\n* *</x:TPX>\n* *</Extensions>",
+                "</x:Speed></x:TPX></Extensions>");
+        return withCorrectedPrefixAndSuffix;
     }
 
     private static String replaceRegex(String tcxContent, String regex, String replacement) {

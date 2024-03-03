@@ -2,6 +2,8 @@ package nl.thomas.xsd;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
+import nl.thomas.xsd.inputcorrectors.TomTomCorrector;
+import nl.thomas.xsd.inputcorrectors.Ttbin2TcxCorrector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -79,14 +81,19 @@ class ConverterTest {
     }
 
     @Test
-    void file_convert_tomTomCorrectorCalled() throws JAXBException, IOException {
+    void file_convert_correctorsCalled() throws JAXBException, IOException {
         String fileContent = getFileContent("src/test/java/testfiles/export_tomtom.tcx");
-        MockedStatic<TomTomCorrector> correctorMock = mockStatic(TomTomCorrector.class);
-        when(TomTomCorrector.correct(fileContent)).thenReturn(fileContent);
+        try ( // mockStatics in try with resources because if not closed they will impact other tests.
+                MockedStatic<TomTomCorrector> tomTomCorrectorMock = mockStatic(TomTomCorrector.class);
+                MockedStatic<Ttbin2TcxCorrector> ttbin2tcxCorrectorMock = mockStatic(Ttbin2TcxCorrector.class)) {
+            when(TomTomCorrector.correct(fileContent)).thenReturn(fileContent);
+            when(Ttbin2TcxCorrector.correct(fileContent)).thenReturn(fileContent);
 
-        converter.convert(fileContent);
+            converter.convert(fileContent);
 
-        correctorMock.verify(() -> TomTomCorrector.correct(fileContent));
+            tomTomCorrectorMock.verify(() -> TomTomCorrector.correct(fileContent));
+            ttbin2tcxCorrectorMock.verify(() -> Ttbin2TcxCorrector.correct(fileContent));
+        }
     }
 
     private static String getFileContent(String first) throws IOException {

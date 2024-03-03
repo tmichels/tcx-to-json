@@ -6,6 +6,8 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
+import nl.thomas.xsd.inputcorrectors.TomTomCorrector;
+import nl.thomas.xsd.inputcorrectors.Ttbin2TcxCorrector;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Source;
@@ -18,13 +20,18 @@ import java.nio.charset.StandardCharsets;
 public class Converter {
 
     public TrainingCenterDatabaseT convert(String tcxContent) throws JAXBException {
-        String correctedContent = TomTomCorrector.correct(tcxContent);
+        String correctedContent = correctInput(tcxContent);
         TrainingCenterDatabaseT trainingCenterDatabaseT = unMarshal(correctedContent);
         log.info("Converted text to TrainingCenterDatabaseT object with {} trackpoints",
                 TrainingCenterDatabaseExtractor
                         .extractTrackpoints(trainingCenterDatabaseT)
                         .size());
         return trainingCenterDatabaseT;
+    }
+
+    private static String correctInput(String tcxContent) {
+        String correctedContent = TomTomCorrector.correct(tcxContent);
+        return Ttbin2TcxCorrector.correct(correctedContent);
     }
 
     private TrainingCenterDatabaseT unMarshal(String correctedContent) throws JAXBException {
