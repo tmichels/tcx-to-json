@@ -3,6 +3,7 @@ package nl.thomas.xsd;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
+import nl.thomas.xsd.tcxtotcdb.TcxParser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,10 @@ import java.util.List;
 @RequestMapping("/api/convert")
 public class TcxController {
 
-    private final Converter converter;
+    private final TcxParser tcxParser;
 
-    public TcxController(Converter converter) {
-        this.converter = converter;
+    public TcxController(TcxParser tcxParser) {
+        this.tcxParser = tcxParser;
     }
 
     @PostMapping("file")
@@ -29,12 +30,12 @@ public class TcxController {
         log.info("GET request to read {}", location);
         List<String> lines = Files.readAllLines(Path.of(location));
         String fileContent = String.join("", lines);
-        return converter.convert(fileContent);
+        return tcxParser.parse(fileContent);
     }
 
     @PostMapping("file-content")
     public TrainingCenterDatabaseT getFromFileContent(@RequestBody String fileContent) throws JAXBException {
         log.info("GET request to read text with {} characters", fileContent.length());
-        return converter.convert(fileContent);
+        return tcxParser.parse(fileContent);
     }
 }

@@ -1,15 +1,11 @@
-package nl.thomas.xsd;
+package nl.thomas.xsd.tcxtotcdb;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainingCenterDatabaseExtractor {
-
-    private TrainingCenterDatabaseExtractor() {
-        // Util class not to be instantiated
-    }
+public abstract class TrainingCenterDatabaseExtractor {
 
     static List<TrackpointT> extractTrackpoints(TrainingCenterDatabaseT trainingCenterDatabaseT) {
         List<ActivityLapT> activityLapTS = extractLaps(trainingCenterDatabaseT);

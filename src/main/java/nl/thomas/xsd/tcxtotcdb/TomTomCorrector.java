@@ -1,4 +1,4 @@
-package nl.thomas.xsd.inputcorrectors;
+package nl.thomas.xsd.tcxtotcdb;
 
 import java.util.regex.Pattern;
 

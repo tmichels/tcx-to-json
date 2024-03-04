@@ -2,8 +2,9 @@ package nl.thomas.xsd;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
-import nl.thomas.xsd.inputcorrectors.TomTomCorrector;
-import nl.thomas.xsd.inputcorrectors.Ttbin2TcxCorrector;
+import nl.thomas.xsd.tcxtotcdb.TcxParser;
+import nl.thomas.xsd.tcxtotcdb.TomTomCorrector;
+import nl.thomas.xsd.tcxtotcdb.Ttbin2TcxCorrector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,16 +25,16 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class, OutputCaptureExtension.class})
-class ConverterTest {
+class TcxParserTest {
 
     @InjectMocks
-    Converter converter;
+    TcxParser tcxParser;
 
     @Test
-    void invalidContent_convert_jaxbException() throws IOException {
+    void invalidContent_parse_jaxbException() throws IOException {
         String fileContent = getFileContent("src/test/java/testfiles/invalidxml.txt");
 
-        assertThatThrownBy(() -> converter.convert(fileContent))
+        assertThatThrownBy(() -> tcxParser.parse(fileContent))
                 .isInstanceOf(JAXBException.class)
                 .hasMessage(null)
                 .hasCauseInstanceOf(SAXParseException.class)
@@ -41,47 +42,47 @@ class ConverterTest {
     }
 
     @Test
-    void tomTomExport_convert_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
+    void tomTomExport_parse_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
         String fileContent = getFileContent("src/test/java/testfiles/export_tomtom.tcx");
 
-        TrainingCenterDatabaseT trainingCenterDatabaseT = converter.convert(fileContent);
+        TrainingCenterDatabaseT trainingCenterDatabaseT = tcxParser.parse(fileContent);
 
         assertThat(
                 getTimeFirstTrackpoint(trainingCenterDatabaseT))
                 .isEqualTo(ZonedDateTime.parse("2023-10-01T10:06:53Z"));
         assertThat(capturedOutput.getOut()).contains(
-                "Converted text to TrainingCenterDatabaseT object with 2868 trackpoints");
+                "Parsed text as TrainingCenterDatabaseT object with 2868 trackpoints");
     }
 
     @Test
-    void garminExport_convert_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
+    void garminExport_parse_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
         String fileContent = getFileContent("src/test/java/testfiles/export_garmin.tcx");
 
-        TrainingCenterDatabaseT trainingCenterDatabaseT = converter.convert(fileContent);
+        TrainingCenterDatabaseT trainingCenterDatabaseT = tcxParser.parse(fileContent);
 
         assertThat(
                 getTimeFirstTrackpoint(trainingCenterDatabaseT))
                 .isEqualTo(ZonedDateTime.parse("2023-11-02T05:15:29.000Z"));
         assertThat(capturedOutput.getOut()).contains(
-                "Converted text to TrainingCenterDatabaseT object with 637 trackpoints");
+                "Parsed text as TrainingCenterDatabaseT object with 637 trackpoints");
     }
 
     @Test
-    void ttbin2tcxExport_convert_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
+    void ttbin2tcxExport_parse_object(CapturedOutput capturedOutput) throws IOException, JAXBException {
         String fileContent = getFileContent("src/test/java/testfiles/export_ttbin2tcx.tcx");
 
-        TrainingCenterDatabaseT trainingCenterDatabaseT = converter.convert(fileContent);
+        TrainingCenterDatabaseT trainingCenterDatabaseT = tcxParser.parse(fileContent);
 
         assertThat(
                 getTimeFirstTrackpoint(trainingCenterDatabaseT)).isEqualTo(
                 ZonedDateTime.parse("2024-03-03T06:56:27Z"));
         assertThat(
                 capturedOutput.getOut()).contains(
-                "Converted text to TrainingCenterDatabaseT object with 1354 trackpoints");
+                "Parsed text as TrainingCenterDatabaseT object with 1354 trackpoints");
     }
 
     @Test
-    void file_convert_correctorsCalled() throws JAXBException, IOException {
+    void file_parse_correctorsCalled() throws JAXBException, IOException {
         String fileContent = getFileContent("src/test/java/testfiles/export_tomtom.tcx");
         try ( // mockStatics in try with resources because if not closed they will impact other tests.
                 MockedStatic<TomTomCorrector> tomTomCorrectorMock = mockStatic(TomTomCorrector.class);
@@ -89,7 +90,7 @@ class ConverterTest {
             when(TomTomCorrector.correct(fileContent)).thenReturn(fileContent);
             when(Ttbin2TcxCorrector.correct(fileContent)).thenReturn(fileContent);
 
-            converter.convert(fileContent);
+            tcxParser.parse(fileContent);
 
             tomTomCorrectorMock.verify(() -> TomTomCorrector.correct(fileContent));
             ttbin2tcxCorrectorMock.verify(() -> Ttbin2TcxCorrector.correct(fileContent));

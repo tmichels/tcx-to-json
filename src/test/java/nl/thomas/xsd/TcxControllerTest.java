@@ -1,6 +1,7 @@
 package nl.thomas.xsd;
 
 import jakarta.xml.bind.JAXBException;
+import nl.thomas.xsd.tcxtotcdb.TcxParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,22 +21,22 @@ class TcxControllerTest {
     @InjectMocks
     private TcxController tcxController;
     @Mock
-    private Converter converter;
+    private TcxParser tcxParser;
 
     @Test
-    void path_readPath_contentToConverter(CapturedOutput capturedOutput) throws JAXBException, IOException {
+    void path_readPath_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
         tcxController.file("src/test/java/testfiles/invalidxml.txt");
 
         assertThat(capturedOutput.getOut()).contains("GET request to read src/test/java/testfiles/invalidxml.txt");
-        verify(converter).convert("Dit bestandis geenTCX bestand");
+        verify(tcxParser).parse("Dit bestandis geenTCX bestand");
     }
 
     @Test
-    void content_readContent_contentToConverter(CapturedOutput capturedOutput) throws JAXBException {
+    void content_readContent_contentToParser(CapturedOutput capturedOutput) throws JAXBException {
         tcxController.getFromFileContent("dit is TCX tekst");
 
         assertThat(capturedOutput.getOut()).contains("GET request to read text with 16 characters");
-        verify(converter).convert("dit is TCX tekst");
+        verify(tcxParser).parse("dit is TCX tekst");
     }
 
 }

@@ -1,4 +1,4 @@
-package nl.thomas.xsd;
+package nl.thomas.xsd.tcxtotcdb;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
@@ -6,8 +6,6 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import lombok.extern.slf4j.Slf4j;
-import nl.thomas.xsd.inputcorrectors.TomTomCorrector;
-import nl.thomas.xsd.inputcorrectors.Ttbin2TcxCorrector;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Source;
@@ -17,12 +15,12 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 @Slf4j
-public class Converter {
+public class TcxParser {
 
-    public TrainingCenterDatabaseT convert(String tcxContent) throws JAXBException {
+    public TrainingCenterDatabaseT parse(String tcxContent) throws JAXBException {
         String correctedContent = correctInput(tcxContent);
         TrainingCenterDatabaseT trainingCenterDatabaseT = unMarshal(correctedContent);
-        log.info("Converted text to TrainingCenterDatabaseT object with {} trackpoints",
+        log.info("Parsed text as TrainingCenterDatabaseT object with {} trackpoints",
                 TrainingCenterDatabaseExtractor
                         .extractTrackpoints(trainingCenterDatabaseT)
                         .size());
