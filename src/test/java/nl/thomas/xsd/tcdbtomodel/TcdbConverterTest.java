@@ -71,7 +71,7 @@ class TcdbConverterTest {
         List<Run> converted = tcdbConverter.convert(tcdb);
         Run actualRun = converted.getFirst();
 
-        assertThat(actualRun.getStartUtcDateTime()).isEqualTo(LocalDateTime.of(2024,3,3,6,56,25));
+        assertThat(actualRun.startUtcDateTime()).isEqualTo(LocalDateTime.of(2024,3,3,6,56,25));
     }
 
     @Test
