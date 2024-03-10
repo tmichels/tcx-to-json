@@ -4,7 +4,7 @@ import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Run;
-import nl.thomas.xsd.tcdbtomodel.TcdbConverter;
+import nl.thomas.xsd.tcdbtomodel.TcdbRunConverter;
 import nl.thomas.xsd.tcxtotcdb.TcxParser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +22,11 @@ import java.util.List;
 public class TcxController {
 
     private final TcxParser tcxParser;
-    private final TcdbConverter tcdbConverter;
+    private final TcdbRunConverter tcdbRunConverter;
 
-    public TcxController(TcxParser tcxParser, TcdbConverter tcdbConverter) {
+    public TcxController(TcxParser tcxParser, TcdbRunConverter tcdbRunConverter) {
         this.tcxParser = tcxParser;
-        this.tcdbConverter = tcdbConverter;
+        this.tcdbRunConverter = tcdbRunConverter;
     }
 
     @PostMapping("/raw/file")
@@ -67,6 +67,6 @@ public class TcxController {
     }
 
     private List<Run> convertTcdb(TrainingCenterDatabaseT tcdb) {
-        return tcdbConverter.convert(tcdb);
+        return tcdbRunConverter.convert(tcdb);
     }
 }

@@ -1,10 +1,7 @@
-package nl.thomas.xsd;
+package nl.thomas.xsd.tcxtotcdb;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
-import nl.thomas.xsd.tcxtotcdb.TcxParser;
-import nl.thomas.xsd.tcxtotcdb.TomTomCorrector;
-import nl.thomas.xsd.tcxtotcdb.Ttbin2TcxCorrector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

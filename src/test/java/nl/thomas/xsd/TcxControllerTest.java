@@ -1,7 +1,7 @@
 package nl.thomas.xsd;
 
 import jakarta.xml.bind.JAXBException;
-import nl.thomas.xsd.tcdbtomodel.TcdbConverter;
+import nl.thomas.xsd.tcdbtomodel.TcdbRunConverter;
 import nl.thomas.xsd.tcxtotcdb.TcxParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ class TcxControllerTest {
     @Mock
     private TcxParser tcxParser;
     @Mock
-    private TcdbConverter tcdbConverter;
+    private TcdbRunConverter tcdbRunConverter;
 
     @Test
     void path_readPathForTcdb_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
@@ -34,7 +34,7 @@ class TcxControllerTest {
 
         assertThat(capturedOutput.getOut()).contains("GET request to read src/test/java/testfiles/invalidxml.txt");
         verify(tcxParser).parse("Dit bestandis geenTCX bestand");
-        verifyNoInteractions(tcdbConverter);
+        verifyNoInteractions(tcdbRunConverter);
     }
 
     @Test
@@ -43,7 +43,7 @@ class TcxControllerTest {
 
         assertThat(capturedOutput.getOut()).contains("GET request to read text with 16 characters");
         verify(tcxParser).parse("dit is TCX tekst");
-        verifyNoInteractions(tcdbConverter);
+        verifyNoInteractions(tcdbRunConverter);
     }
 
     @Test
@@ -52,7 +52,7 @@ class TcxControllerTest {
 
         assertThat(capturedOutput.getOut()).contains("GET request to read src/test/java/testfiles/invalidxml.txt");
         verify(tcxParser).parse("Dit bestandis geenTCX bestand");
-        verify(tcdbConverter).convert(any());
+        verify(tcdbRunConverter).convert(any());
     }
 
     @Test
@@ -61,7 +61,7 @@ class TcxControllerTest {
 
         assertThat(capturedOutput.getOut()).contains("GET request to read text with 16 characters");
         verify(tcxParser).parse("dit is TCX tekst");
-        verify(tcdbConverter).convert(any());
+        verify(tcdbRunConverter).convert(any());
     }
 
 }

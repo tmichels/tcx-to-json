@@ -1,25 +1,28 @@
 package nl.thomas.xsd.model;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.Data;
+import com.garmin.xmlschemas.trainingcenterdatabase.v2.TriggerMethodT;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@Getter
 public class Lap {
 
-    private Long lapId;
-    private Integer lapNr;
-    private LocalDateTime lapStartUtc;
-    private Double speedMax;
-    private String triggerMethod;
-    private Integer calories;
-    @JsonProperty("runId")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "runId")
-    @JsonIdentityReference(alwaysAsId = true)
-    private Run run;
-    @JsonIgnore
-    private List<Trackpoint> trackpoints;
+    private final LocalDateTime lapStartUtc;
+    private final Double totalTimeSeconds;
+    private final Double maximumSpeed;
+    private final Double distanceMeters;
+    private final Integer calories;
+    private final Short averageHeartRateBpm;
+    private final Short maximumHeartRateBpm;
+    private final String intensity;
+    private final Short cadence;
+    private final TriggerMethodT triggerMethod;
+    private final List<Trackpoint> trackpoints;
+    private final String notes;
+    private final List<Object> extensions;
 
 }

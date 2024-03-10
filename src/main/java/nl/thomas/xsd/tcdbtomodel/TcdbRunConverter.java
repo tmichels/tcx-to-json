@@ -7,16 +7,18 @@ import nl.thomas.xsd.model.Lap;
 import nl.thomas.xsd.model.Run;
 import org.springframework.stereotype.Component;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Component
 @Slf4j
-public class TcdbConverter {
+public class TcdbRunConverter {
+
+    private final TcdbLapConverter tcdbLapConverter;
+
+    public TcdbRunConverter(TcdbLapConverter tcdbLapConverter) {
+        this.tcdbLapConverter = tcdbLapConverter;
+    }
 
 
     public List<Run> convert(TrainingCenterDatabaseT tcdb) {
@@ -39,23 +41,14 @@ public class TcdbConverter {
 
     private Run convertActivityToRun(ActivityT activityT) {
         return new Run(
-                getStartDateTime(activityT),
+                TimeConverter.getStartDateTime(activityT.getId()),
                 activityT.getCreator().getName(),
                 activityT.getSport(),
                 getLaps(activityT));
     }
 
-    private LocalDateTime getStartDateTime(ActivityT activityT) {
-        XMLGregorianCalendar id = activityT.getId();
-        if (id == null) {
-            throw new IllegalArgumentException("Start date/time was not correctly parsed to XMLGregorianCalendar. " +
-                    "Format should be this format: 2024-03-03T06:56:25Z");
-        }
-        return ZonedDateTime.parse(id.toString()).toLocalDateTime();
-    }
-
     private List<Lap> getLaps(ActivityT activityT) {
-        return new ArrayList<>();
+        return tcdbLapConverter.convertLaps(activityT);
     }
 
 }
