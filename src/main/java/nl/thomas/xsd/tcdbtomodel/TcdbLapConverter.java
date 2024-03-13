@@ -2,20 +2,21 @@ package nl.thomas.xsd.tcdbtomodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.HeartRateInBeatsPerMinuteT;
-import jakarta.xml.bind.JAXBElement;
-import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Lap;
 import nl.thomas.xsd.model.Trackpoint;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Slf4j
 public class TcdbLapConverter {
+
+    private final TcdbTrackpointConverter tcdbTrackpointConverter;
+
+    public TcdbLapConverter(TcdbTrackpointConverter tcdbTrackpointConverter) {
+        this.tcdbTrackpointConverter = tcdbTrackpointConverter;
+    }
 
     List<Lap> convertLaps(ActivityT activityT) {
         return activityT.getLap().stream()
@@ -35,9 +36,9 @@ public class TcdbLapConverter {
                 activityLapT.getIntensity().value(),
                 activityLapT.getCadence(),
                 activityLapT.getTriggerMethod(),
-                getTrackpoints(),
+                getTrackpoints(activityLapT),
                 activityLapT.getNotes(),
-                getJaxbExtensions(activityLapT.getExtensions())
+                ExtensionConverter.getJaxbExtensions(activityLapT.getExtensions())
         );
     }
 
@@ -45,18 +46,7 @@ public class TcdbLapConverter {
         return heartRateBpm == null ? null : heartRateBpm.getValue();
     }
 
-    private List<Trackpoint> getTrackpoints() {
-        return new ArrayList<>();
-    }
-
-    private List<Object> getJaxbExtensions(ExtensionsT extensions) {
-        return extensions == null ?
-                List.of() :
-                extensions.getAny().stream()
-                        .filter(e -> e instanceof JAXBElement<?>)
-                        .map(e -> (JAXBElement<?>) e)
-                        .map(JAXBElement::getValue)
-                        .map(e -> (Object) e)
-                        .toList();
+    private List<Trackpoint> getTrackpoints(ActivityLapT activityLapT) {
+        return tcdbTrackpointConverter.convertTrackpoints(activityLapT);
     }
 }

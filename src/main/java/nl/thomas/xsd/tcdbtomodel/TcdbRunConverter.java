@@ -2,7 +2,6 @@ package nl.thomas.xsd.tcdbtomodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
-import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Lap;
 import nl.thomas.xsd.model.Run;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Component
-@Slf4j
 public class TcdbRunConverter {
 
     private final TcdbLapConverter tcdbLapConverter;

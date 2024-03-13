@@ -8,6 +8,7 @@ import nl.thomas.xsd.model.Lap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ class TcdbLapConverterTest {
 
     @InjectMocks
     TcdbLapConverter tcdbLapConverter;
+    @Mock
+    TcdbTrackpointConverter tcdbTrackpointConverter;
 
     @Test
     void avgHeartRateBpmNull_convert_null() throws IOException, JAXBException {
