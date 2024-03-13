@@ -1,5 +1,6 @@
 package nl.thomas.xsd.tcdbtomodel;
 
+import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
@@ -46,7 +47,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getExtensions()).isNull();
+        assertThat(converted.getExtensions()).isEmpty();
     }
 
     @Test
@@ -97,6 +98,34 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
         assertThat(converted.getNotes()).isNull();
+    }
+
+    @Test
+    void lapExtension_convert_lapExtension() throws IOException, JAXBException {
+        TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_garmin.tcx");
+
+        Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
+
+        assertThat(converted.getExtensions()).hasSize(1);
+        Object extension = converted.getExtensions().getFirst();
+        assertThat(extension).isInstanceOf(ActivityLapExtensionT.class);
+        ActivityLapExtensionT activityLapExtensionT = (ActivityLapExtensionT) extension;
+        assertThat(activityLapExtensionT.getAvgSpeed()).isEqualTo(2.2279999256134033);
+        assertThat(activityLapExtensionT.getAvgRunCadence()).isEqualTo((short) 81);
+        assertThat(activityLapExtensionT.getMaxRunCadence()).isEqualTo((short) 114);
+        assertThat(activityLapExtensionT.getSteps()).isNull();
+        assertThat(activityLapExtensionT.getMaxBikeCadence()).isNull();
+        assertThat(activityLapExtensionT.getMaxWatts()).isNull();
+        assertThat(activityLapExtensionT.getExtensions()).isNull();
+    }
+
+    @Test
+    void noLlapExtension_convert_emptyList() throws IOException, JAXBException {
+        TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_tomtom.tcx");
+
+        Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
+
+        assertThat(converted.getExtensions()).isEmpty();
     }
 
 }
