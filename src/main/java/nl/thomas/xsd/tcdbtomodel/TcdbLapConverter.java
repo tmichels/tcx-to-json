@@ -2,7 +2,6 @@ package nl.thomas.xsd.tcdbtomodel;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.HeartRateInBeatsPerMinuteT;
 import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Lap;
@@ -22,13 +21,7 @@ public class TcdbLapConverter {
         this.tcdbTrackpointConverter = tcdbTrackpointConverter;
     }
 
-    List<Lap> convertLaps(ActivityT activityT) {
-        return activityT.getLap().stream()
-                .map(this::convertLap)
-                .toList();
-    }
-
-    private Lap convertLap(ActivityLapT activityLapT) {
+    Lap convertLap(ActivityLapT activityLapT) {
         Optional<ActivityLapExtensionT> activityLapExtensionT = getLapExtension(activityLapT);
         return new Lap(
                 TimeConverter.getStartDateTime(activityLapT.getStartTime()),
@@ -52,15 +45,15 @@ public class TcdbLapConverter {
     private Optional<ActivityLapExtensionT> getLapExtension(ActivityLapT activityLapT) {
         List<Object> allExtensions = ExtensionConverter.getJaxbExtensions(activityLapT.getExtensions());
         List<ActivityLapExtensionT> lapExtension = ExtensionConverter.filterExtensionsOfType(allExtensions, ActivityLapExtensionT.class);
+        if (lapExtension.size() < allExtensions.size()) {
+            log.warn("Found unexpected type(s) of Lap extensions: {}", allExtensions.stream().map((Object o) -> o.getClass().getName()).toList());
+        }
         if (lapExtension.isEmpty()) {
-            log.debug("No LapExtension for lap {}", activityLapT);
+            log.info("No LapExtension for lap with start time {}", activityLapT.getStartTime());
             return Optional.empty();
         }
         if (lapExtension.size() > 1) {
-            log.warn("Unexpected amount of {} LapExtensionTs for Lap {}", lapExtension.size(), activityLapT);
-        }
-        if (lapExtension.size() < allExtensions.size()) {
-            log.warn("Found unexpected type(s) of Lap extensions: {}", allExtensions.stream().map((Object o) -> o.getClass().getName()).toList());
+            log.warn("Unexpected amount of {} LapExtensionTs for Lap {}", lapExtension.size(), activityLapT.getStartTime());
         }
         return Optional.of(lapExtension.getFirst());
     }

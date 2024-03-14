@@ -46,7 +46,9 @@ public class TcdbRunConverter {
     }
 
     private List<Lap> getLaps(ActivityT activityT) {
-        return tcdbLapConverter.convertLaps(activityT);
+        return activityT.getLap().stream()
+                .map(tcdbLapConverter::convertLap)
+                .toList();
     }
 
 }
