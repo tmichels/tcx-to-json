@@ -17,4 +17,11 @@ public class ExtensionConverter {
                         .map(e -> (Object) e)
                         .toList();
     }
+
+    static <T> List<T> filterExtensionsOfType(List<Object> jaxbExtensions, Class<T> type) {
+        return jaxbExtensions.stream()
+                .filter(type::isInstance)
+                .map(a -> (T) a)
+                .toList();
+    }
 }

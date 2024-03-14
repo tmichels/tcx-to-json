@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -26,8 +27,7 @@ public class TcdbTrackpointConverter {
 
     private Trackpoint convertTp(TrackpointT trackpointT) {
         PositionT position = trackpointT.getPosition();
-        ActivityTrackpointExtensionT trackpointExtensionT = getTrackpointExtension(trackpointT);
-
+        Optional<ActivityTrackpointExtensionT> trackpointExtensionT = getTrackpointExtension(trackpointT);
 
         return new Trackpoint(
                 TimeConverter.getStartDateTime(trackpointT.getTime()),
@@ -37,34 +37,35 @@ public class TcdbTrackpointConverter {
                 trackpointT.getDistanceMeters(),
                 trackpointT.getHeartRateBpm().getValue(),
                 getCadence(trackpointT, trackpointExtensionT),
-                trackpointExtensionT.getSpeed()
+                trackpointExtensionT.map(ActivityTrackpointExtensionT::getSpeed).orElse(null)
         );
     }
 
-    private static Short getCadence(TrackpointT trackpointT, ActivityTrackpointExtensionT trackpointExtensionT) {
+    private static Optional<ActivityTrackpointExtensionT> getTrackpointExtension(TrackpointT trackpointT) {
+        List<Object> allExtensions = ExtensionConverter.getJaxbExtensions(trackpointT.getExtensions());
+        List<ActivityTrackpointExtensionT> atpExtensions = ExtensionConverter.filterExtensionsOfType(allExtensions, ActivityTrackpointExtensionT.class);
+        if (atpExtensions.isEmpty()) {
+            log.warn("No TrackpointExtension for trackpoint {}", trackpointT);
+            return Optional.empty();
+        }
+        if (atpExtensions.size() > 1) {
+            log.warn("Unexpected amount of {} ActivityTrackpointExtensionT for Trackpoint {}", atpExtensions.size(), trackpointT);
+        }
+        if (atpExtensions.size() < allExtensions.size()) {
+            log.warn("Unexpected type of Trackpoint extensions was found: {}", allExtensions.stream());
+        }
+        return Optional.of(atpExtensions.getFirst());
+    }
+
+    private static Short getCadence(TrackpointT trackpointT, Optional<ActivityTrackpointExtensionT> trackpointExtensionT) {
         Short cadenceFromTp = trackpointT.getCadence();
-        Short cadenceFromExt = trackpointExtensionT.getRunCadence();
+        Short cadenceFromExt = trackpointExtensionT.map(ActivityTrackpointExtensionT::getRunCadence).orElse(null);
 
         if (cadenceFromTp == null && cadenceFromExt != null) {
             return cadenceFromExt;
         } else {
             return cadenceFromTp;
         }
-    }
-
-    private static ActivityTrackpointExtensionT getTrackpointExtension(TrackpointT trackpointT) {
-        List<Object> jaxbExtensions = ExtensionConverter.getJaxbExtensions(trackpointT.getExtensions());
-        List<ActivityTrackpointExtensionT> tpExtension = jaxbExtensions.stream()
-                .filter(o -> o instanceof ActivityTrackpointExtensionT)
-                .map(a -> (ActivityTrackpointExtensionT) a)
-                .toList();
-        if (tpExtension.size() != 1) {
-            log.warn("Unexpected amount of {} ActivityTrackpointExtensionT for Trackpoint {}", tpExtension.size(), trackpointT);
-        }
-        if (tpExtension.size() < jaxbExtensions.size()) {
-            log.warn("Unexpected type of Trackpoint extensions was found: {}", jaxbExtensions.stream());
-        }
-        return tpExtension.getFirst();
     }
 
 }

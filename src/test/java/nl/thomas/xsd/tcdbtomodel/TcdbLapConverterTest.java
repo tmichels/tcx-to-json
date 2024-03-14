@@ -1,6 +1,5 @@
 package nl.thomas.xsd.tcdbtomodel;
 
-import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
@@ -30,7 +29,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getAverageHeartRateBpm()).isNull();
+        assertThat(converted.getAvgSpeed()).isNull();
+        assertThat(converted.getAvgRunCadence()).isNull();
+        assertThat(converted.getMaxRunCadence()).isNull();
     }
 
     @Test
@@ -44,23 +45,27 @@ class TcdbLapConverterTest {
     }
 
     @Test
-    void extensionsNull_convert_null() throws IOException, JAXBException {
+    void extensionsNull_convert_noDataFromLapExtension() throws IOException, JAXBException {
         TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_ttbin2tcx.tcx");
         TestActivityProvider.getFirstLap(tcdb).setExtensions(null);
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getExtensions()).isEmpty();
+        assertThat(converted.getAvgSpeed()).isNull();
+        assertThat(converted.getAvgRunCadence()).isNull();
+        assertThat(converted.getMaxRunCadence()).isNull();
     }
 
     @Test
-    void emptyExtensions_convert_emptyList() throws IOException, JAXBException {
+    void emptyExtensions_convert_noDataFromLapExtension() throws IOException, JAXBException {
         TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_ttbin2tcx.tcx");
         TestActivityProvider.getFirstLap(tcdb).setExtensions(new ExtensionsT());
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getExtensions()).isEmpty();
+        assertThat(converted.getAvgSpeed()).isNull();
+        assertThat(converted.getAvgRunCadence()).isNull();
+        assertThat(converted.getMaxRunCadence()).isNull();
     }
 
     @Test
@@ -104,31 +109,23 @@ class TcdbLapConverterTest {
     }
 
     @Test
-    void lapExtension_convert_lapExtension() throws IOException, JAXBException {
+    void lapExtension_convert_dataFromLapExtension() throws IOException, JAXBException {
         TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_garmin.tcx");
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getExtensions()).hasSize(1);
-        Object extension = converted.getExtensions().getFirst();
-        assertThat(extension).isInstanceOf(ActivityLapExtensionT.class);
-        ActivityLapExtensionT activityLapExtensionT = (ActivityLapExtensionT) extension;
-        assertThat(activityLapExtensionT.getAvgSpeed()).isEqualTo(2.2279999256134033);
-        assertThat(activityLapExtensionT.getAvgRunCadence()).isEqualTo((short) 81);
-        assertThat(activityLapExtensionT.getMaxRunCadence()).isEqualTo((short) 114);
-        assertThat(activityLapExtensionT.getSteps()).isNull();
-        assertThat(activityLapExtensionT.getMaxBikeCadence()).isNull();
-        assertThat(activityLapExtensionT.getMaxWatts()).isNull();
-        assertThat(activityLapExtensionT.getExtensions()).isNull();
+        assertThat(converted.getAvgSpeed()).isEqualTo(2.2279999256134033);
+        assertThat(converted.getAvgRunCadence()).isEqualTo((short) 81);
+        assertThat(converted.getMaxRunCadence()).isEqualTo((short) 114);
     }
 
     @Test
-    void noLlapExtension_convert_emptyList() throws IOException, JAXBException {
+    void noLlapExtension_convert_noDataFromLapExtension() throws IOException, JAXBException {
         TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT("export_tomtom.tcx");
 
         Lap converted = tcdbLapConverter.convertLaps(tcdb.getActivities().getActivity().getFirst()).getFirst();
 
-        assertThat(converted.getExtensions()).isEmpty();
+        assertThat(converted.getMaxRunCadence()).isNull();
     }
 
 }

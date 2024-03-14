@@ -21,8 +21,10 @@ public class Lap {
     private final String intensity;
     private final Short cadence;
     private final TriggerMethodT triggerMethod;
-    private final List<Trackpoint> trackpoints;
     private final String notes;
-    private final List<Object> extensions;
+    private final Double avgSpeed;
+    private final Short avgRunCadence;
+    private final Short maxRunCadence;
+    private final List<Trackpoint> trackpoints;
 
 }
