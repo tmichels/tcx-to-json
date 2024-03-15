@@ -29,7 +29,9 @@ public class TcxParser {
 
     private static String correctInput(String tcxContent) {
         String correctedContent = TomTomCorrector.correct(tcxContent);
-        return Ttbin2TcxCorrector.correct(correctedContent);
+        correctedContent = Ttbin2TcxCorrector.correct(correctedContent);
+        correctedContent = StravaCorrector.correct(correctedContent);
+        return correctedContent;
     }
 
     private TrainingCenterDatabaseT unMarshal(String correctedContent) throws JAXBException {
