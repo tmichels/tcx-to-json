@@ -3,11 +3,13 @@ package nl.thomas.xsd.tcdbtomodel;
 import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.HeartRateInBeatsPerMinuteT;
+import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackT;
 import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Lap;
 import nl.thomas.xsd.model.Trackpoint;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +65,11 @@ public class TcdbLapConverter {
     }
 
     private List<Trackpoint> getTrackpoints(ActivityLapT activityLapT) {
-        return tcdbTrackpointConverter.convertTrackpoints(activityLapT);
+         return activityLapT.getTrack().stream() // Cannot be null, see generated class.
+                .map(TrackT::getTrackpoint) // Cannot be null, see generated class.
+                .flatMap(Collection::stream)
+                .map(tcdbTrackpointConverter::convertTrackpoint)
+                .toList();
     }
 
 }

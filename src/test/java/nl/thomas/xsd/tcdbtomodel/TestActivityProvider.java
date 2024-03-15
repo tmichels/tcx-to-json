@@ -14,17 +14,21 @@ import java.util.List;
 
 public class TestActivityProvider {
 
-    static TrackpointT getFirstTrackpoint(ActivityLapT activityLapT) {
-        return activityLapT.getTrack().getFirst().getTrackpoint().getFirst();
+    static TrackpointT getFirstTrackpoint(String testFileName) throws JAXBException, IOException {
+        return getNthTrackpoint(testFileName, 0);
     }
 
-    static ActivityLapT getFirstLap(TrainingCenterDatabaseT tcdb) {
-        return getFirstActivity(tcdb).getLap().getFirst();
+    static TrackpointT getNthTrackpoint(String testFileName, int i) throws JAXBException, IOException {
+        return getFirstLap(testFileName).getTrack().getFirst().getTrackpoint().get(i);
     }
 
     static ActivityLapT getFirstLap(String testFileName) throws IOException, JAXBException {
         TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT(testFileName);
-        return tcdb.getActivities().getActivity().getFirst().getLap().getFirst();
+        return getFirstLap(tcdb);
+    }
+
+    static ActivityLapT getFirstLap(TrainingCenterDatabaseT tcdb) {
+        return getFirstActivity(tcdb).getLap().getFirst();
     }
 
     static ActivityT getFirstActivity(String testFileName) throws JAXBException, IOException {

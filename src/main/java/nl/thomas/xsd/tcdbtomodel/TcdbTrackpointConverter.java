@@ -1,15 +1,12 @@
 package nl.thomas.xsd.tcdbtomodel;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.PositionT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackpointT;
 import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Trackpoint;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,15 +14,7 @@ import java.util.Optional;
 @Slf4j
 public class TcdbTrackpointConverter {
 
-    List<Trackpoint> convertTrackpoints(ActivityLapT activityLapT) {
-        return activityLapT.getTrack().stream() // Cannot be null, see generated class.
-                .map(TrackT::getTrackpoint) // Cannot be null, see generated class.
-                .flatMap(Collection::stream)
-                .map(this::convertTp)
-                .toList();
-    }
-
-    private Trackpoint convertTp(TrackpointT trackpointT) {
+    Trackpoint convertTrackpoint(TrackpointT trackpointT) {
         PositionT position = getPosition(trackpointT);
         Optional<ActivityTrackpointExtensionT> trackpointExtensionT = getTrackpointExtension(trackpointT);
 
