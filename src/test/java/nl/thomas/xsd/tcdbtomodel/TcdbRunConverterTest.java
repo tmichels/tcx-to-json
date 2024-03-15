@@ -93,7 +93,7 @@ class TcdbRunConverterTest {
         assertThat(converted.getStartUtcDateTime()).isEqualTo("2023-11-02T05:15:29.000");
         assertThat(converted.getCreatorName()).isEqualTo("Forerunner 245 Music");
         assertThat(converted.getSport()).isEqualTo(SportT.RUNNING);
-        assertThat(converted.getLaps()).isEmpty(); // Actually there are laps, but in this tests a mock is used for the lapConverter. #TODO Will be tested elsewhere.
+        assertThat(converted.getLaps()).hasSize(6);
     }
 
 }
