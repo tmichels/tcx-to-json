@@ -2,6 +2,7 @@ package nl.thomas.xsd.tcdbtomodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityT;
+import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackpointT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
 import nl.thomas.xsd.tcxtotcdb.TcxParser;
@@ -13,8 +14,17 @@ import java.util.List;
 
 public class TestActivityProvider {
 
+    static TrackpointT getFirstTrackpoint(ActivityLapT activityLapT) {
+        return activityLapT.getTrack().getFirst().getTrackpoint().getFirst();
+    }
+
     static ActivityLapT getFirstLap(TrainingCenterDatabaseT tcdb) {
         return getFirstActivity(tcdb).getLap().getFirst();
+    }
+
+    static ActivityLapT getFirstLap(String testFileName) throws IOException, JAXBException {
+        TrainingCenterDatabaseT tcdb = TestActivityProvider.getTrainingCenterDatabaseT(testFileName);
+        return tcdb.getActivities().getActivity().getFirst().getLap().getFirst();
     }
 
     static ActivityT getFirstActivity(String testFileName) throws JAXBException, IOException {
@@ -27,6 +37,6 @@ public class TestActivityProvider {
     }
 
     static ActivityT getFirstActivity(TrainingCenterDatabaseT tcdb) {
-        return tcdb.getActivities().getActivity().get(0);
+        return tcdb.getActivities().getActivity().getFirst();
     }
 }

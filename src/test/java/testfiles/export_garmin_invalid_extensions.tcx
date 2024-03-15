@@ -34,12 +34,6 @@
                         <HeartRateBpm>
                             <Value>89</Value>
                         </HeartRateBpm>
-                        <Extensions>
-                            <ns3:TPX>
-                                <ns3:Speed>0.8399999737739563</ns3:Speed>
-                                <ns3:RunCadence>0</ns3:RunCadence>
-                            </ns3:TPX>
-                        </Extensions>
                     </Trackpoint>
                     <Trackpoint>
                         <Time>2023-11-02T05:15:31.000Z</Time>
@@ -53,6 +47,10 @@
                             <Value>86</Value>
                         </HeartRateBpm>
                         <Extensions>
+                            <ns3:TPX>
+                                <ns3:Speed>2.3</ns3:Speed>
+                                <ns3:RunCadence>29</ns3:RunCadence>
+                            </ns3:TPX>
                             <ns3:TPX>
                                 <ns3:Speed>0.0</ns3:Speed>
                                 <ns3:RunCadence>0</ns3:RunCadence>
@@ -72,9 +70,14 @@
                         </HeartRateBpm>
                         <Extensions>
                             <ns3:TPX>
-                                <ns3:Speed>0.0</ns3:Speed>
+                                <ns3:Speed>4.2</ns3:Speed>
                                 <ns3:RunCadence>83</ns3:RunCadence>
                             </ns3:TPX>
+                            <ns3:LX>
+                                <ns3:AvgSpeed>2.4539999961853027</ns3:AvgSpeed>
+                                <ns3:AvgRunCadence>81</ns3:AvgRunCadence>
+                                <ns3:MaxRunCadence>85</ns3:MaxRunCadence>
+                            </ns3:LX>
                         </Extensions>
                     </Trackpoint>
                     <Trackpoint>
@@ -88,12 +91,6 @@
                         <HeartRateBpm>
                             <Value>88</Value>
                         </HeartRateBpm>
-                        <Extensions>
-                            <ns3:TPX>
-                                <ns3:Speed>2.2860000133514404</ns3:Speed>
-                                <ns3:RunCadence>84</ns3:RunCadence>
-                            </ns3:TPX>
-                        </Extensions>
                     </Trackpoint>
                     <Trackpoint>
                         <Time>2023-11-02T05:15:41.000Z</Time>

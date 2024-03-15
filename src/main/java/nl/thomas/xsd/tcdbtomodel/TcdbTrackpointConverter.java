@@ -17,7 +17,7 @@ import java.util.Optional;
 @Slf4j
 public class TcdbTrackpointConverter {
 
-    public List<Trackpoint> convertTrackpoints(ActivityLapT activityLapT) {
+    List<Trackpoint> convertTrackpoints(ActivityLapT activityLapT) {
         return activityLapT.getTrack().stream() // Cannot be null, see generated class.
                 .map(TrackT::getTrackpoint) // Cannot be null, see generated class.
                 .flatMap(Collection::stream)
@@ -26,7 +26,7 @@ public class TcdbTrackpointConverter {
     }
 
     private Trackpoint convertTp(TrackpointT trackpointT) {
-        PositionT position = trackpointT.getPosition();
+        PositionT position = getPosition(trackpointT);
         Optional<ActivityTrackpointExtensionT> trackpointExtensionT = getTrackpointExtension(trackpointT);
 
         return new Trackpoint(
@@ -35,24 +35,32 @@ public class TcdbTrackpointConverter {
                 position != null ? position.getLongitudeDegrees() : null,
                 trackpointT.getAltitudeMeters(),
                 trackpointT.getDistanceMeters(),
-                trackpointT.getHeartRateBpm().getValue(),
+                trackpointT.getHeartRateBpm() == null ? null : trackpointT.getHeartRateBpm().getValue(),
                 getCadence(trackpointT, trackpointExtensionT),
                 trackpointExtensionT.map(ActivityTrackpointExtensionT::getSpeed).orElse(null)
         );
+    }
+
+    private static PositionT getPosition(TrackpointT trackpointT) {
+        PositionT position = trackpointT.getPosition();
+        if (position == null) {
+            log.warn("No latitude and longitude available for trackpoint on {}", trackpointT.getTime());
+        }
+        return position;
     }
 
     private static Optional<ActivityTrackpointExtensionT> getTrackpointExtension(TrackpointT trackpointT) {
         List<Object> allExtensions = ExtensionConverter.getJaxbExtensions(trackpointT.getExtensions());
         List<ActivityTrackpointExtensionT> atpExtensions = ExtensionConverter.filterExtensionsOfType(allExtensions, ActivityTrackpointExtensionT.class);
         if (atpExtensions.isEmpty()) {
-            log.warn("No TrackpointExtension for trackpoint {}", trackpointT);
+            log.warn("No TrackpointExtension for trackpoint on {}", trackpointT.getTime());
             return Optional.empty();
         }
         if (atpExtensions.size() > 1) {
-            log.warn("Unexpected amount of {} ActivityTrackpointExtensionT for Trackpoint {}", atpExtensions.size(), trackpointT);
+            log.warn("Unexpected amount of {} ActivityTrackpointExtensionT for Trackpoint on {}", atpExtensions.size(), trackpointT.getTime());
         }
         if (atpExtensions.size() < allExtensions.size()) {
-            log.warn("Unexpected type of Trackpoint extensions was found: {}", allExtensions.stream());
+            log.warn("Unexpected type of Trackpoint extensions was found for Trackpoint on {}: {}", trackpointT.getTime(), allExtensions.stream().toList().stream().map((Object o) -> o.getClass().getName()).toList());
         }
         return Optional.of(atpExtensions.getFirst());
     }
@@ -60,6 +68,13 @@ public class TcdbTrackpointConverter {
     private static Short getCadence(TrackpointT trackpointT, Optional<ActivityTrackpointExtensionT> trackpointExtensionT) {
         Short cadenceFromTp = trackpointT.getCadence();
         Short cadenceFromExt = trackpointExtensionT.map(ActivityTrackpointExtensionT::getRunCadence).orElse(null);
+
+        if (cadenceFromExt != null && cadenceFromTp != null && !cadenceFromExt.equals(cadenceFromTp)) {
+            log.warn("Conflicting values for cadence in trackpoint on {}: extension: {}, trackpoint value: {}",
+                    trackpointT.getTime(),
+                    cadenceFromExt,
+                    cadenceFromTp);
+        }
 
         if (cadenceFromTp == null && cadenceFromExt != null) {
             return cadenceFromExt;
