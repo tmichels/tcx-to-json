@@ -71,7 +71,7 @@ class TcdbRunConverterTest {
         List<Run> converted = tcdbRunConverter.convert(tcdb);
         Run actualRun = converted.getFirst();
 
-        assertThat(actualRun.getStartUtcDateTime()).isEqualTo(LocalDateTime.of(2024,3,3,6,56,25));
+        assertThat(actualRun.startUtcDateTime()).isEqualTo(LocalDateTime.of(2024,3,3,6,56,25));
     }
 
     @Test
@@ -90,10 +90,10 @@ class TcdbRunConverterTest {
 
         Run converted = tcdbRunConverter.convert(tcdb).getFirst();
 
-        assertThat(converted.getStartUtcDateTime()).isEqualTo("2023-11-02T05:15:29.000");
-        assertThat(converted.getCreatorName()).isEqualTo("Forerunner 245 Music");
-        assertThat(converted.getSport()).isEqualTo(SportT.RUNNING);
-        assertThat(converted.getLaps()).hasSize(6);
+        assertThat(converted.startUtcDateTime()).isEqualTo("2023-11-02T05:15:29.000");
+        assertThat(converted.creatorName()).isEqualTo("Forerunner 245 Music");
+        assertThat(converted.sport()).isEqualTo(SportT.RUNNING);
+        assertThat(converted.laps()).hasSize(6);
     }
 
 }

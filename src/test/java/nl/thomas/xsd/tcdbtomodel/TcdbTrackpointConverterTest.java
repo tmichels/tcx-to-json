@@ -29,8 +29,8 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTrackpoint);
 
-        assertThat(trackpoint.getLatitude()).isNull();
-        assertThat(trackpoint.getLongitude()).isNull();
+        assertThat(trackpoint.latitude()).isNull();
+        assertThat(trackpoint.longitude()).isNull();
         assertThat(capturedOutput.getOut()).contains("No latitude and longitude available for trackpoint on 2024-03-03T06:56:27Z");
     }
 
@@ -40,8 +40,8 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(trackpointT);
 
-        assertThat(trackpoint.getSpeed()).isNull();
-        assertThat(trackpoint.getCadence()).isNull();
+        assertThat(trackpoint.speed()).isNull();
+        assertThat(trackpoint.cadence()).isNull();
         assertThat(capturedOutput.getOut()).contains("No TrackpointExtension for trackpoint on 2023-11-02T05:15:38.000Z");
     }
 
@@ -51,8 +51,8 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(trackpointT);
 
-        assertThat(trackpoint.getSpeed()).isEqualTo(2.3);
-        assertThat(trackpoint.getCadence()).isEqualTo((short) 29);
+        assertThat(trackpoint.speed()).isEqualTo(2.3);
+        assertThat(trackpoint.cadence()).isEqualTo((short) 29);
         assertThat(capturedOutput.getOut()).contains("Unexpected amount of 2 ActivityTrackpointExtensionT for Trackpoint on 2023-11-02T05:15:31.000Z");
     }
 
@@ -62,8 +62,8 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(trackpointT);
 
-        assertThat(trackpoint.getSpeed()).isEqualTo(4.2);
-        assertThat(trackpoint.getCadence()).isEqualTo((short) 83);
+        assertThat(trackpoint.speed()).isEqualTo(4.2);
+        assertThat(trackpoint.cadence()).isEqualTo((short) 83);
         assertThat(capturedOutput.getOut()).contains(
                 "Unexpected type of Trackpoint extensions was found for Trackpoint on 2023-11-02T05:15:35.000Z: [" +
                         "com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT, " +
@@ -77,7 +77,7 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTrackpoint);
 
-        assertThat(trackpoint.getHeartRateBpm()).isNull();
+        assertThat(trackpoint.heartRateBpm()).isNull();
     }
 
     @Test
@@ -90,7 +90,7 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoints = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
-        assertThat(trackpoints.getCadence()).isEqualTo((short) 3);
+        assertThat(trackpoints.cadence()).isEqualTo((short) 3);
         assertThat(capturedOutput.getOut()).contains("Conflicting values for cadence in trackpoint on 2023-10-01T10:06:53Z: extension: 4, trackpoint value: 3");
     }
 
@@ -104,7 +104,7 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
-        assertThat(trackpoint.getCadence()).isEqualTo((short) 3);
+        assertThat(trackpoint.cadence()).isEqualTo((short) 3);
     }
 
     @Test
@@ -117,7 +117,7 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
-        assertThat(trackpoint.getCadence()).isNull();
+        assertThat(trackpoint.cadence()).isNull();
     }
 
     @Test
@@ -130,6 +130,6 @@ class TcdbTrackpointConverterTest {
 
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
-        assertThat(trackpoint.getCadence()).isEqualTo((short) 4);
+        assertThat(trackpoint.cadence()).isEqualTo((short) 4);
     }
 }

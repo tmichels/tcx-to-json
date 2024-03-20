@@ -34,9 +34,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getAvgSpeed()).isNull();
-        assertThat(converted.getAvgRunCadence()).isNull();
-        assertThat(converted.getMaxRunCadence()).isNull();
+        assertThat(converted.avgSpeed()).isNull();
+        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.maxRunCadence()).isNull();
     }
 
     @Test
@@ -46,7 +46,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getMaximumHeartRateBpm()).isNull();
+        assertThat(converted.maximumHeartRateBpm()).isNull();
     }
 
     @Test
@@ -56,9 +56,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getAvgSpeed()).isNull();
-        assertThat(converted.getAvgRunCadence()).isNull();
-        assertThat(converted.getMaxRunCadence()).isNull();
+        assertThat(converted.avgSpeed()).isNull();
+        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.maxRunCadence()).isNull();
     }
 
     @Test
@@ -68,9 +68,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getAvgSpeed()).isNull();
-        assertThat(converted.getAvgRunCadence()).isNull();
-        assertThat(converted.getMaxRunCadence()).isNull();
+        assertThat(converted.avgSpeed()).isNull();
+        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.maxRunCadence()).isNull();
     }
 
     @Test
@@ -80,7 +80,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getCadence()).isNull();
+        assertThat(converted.cadence()).isNull();
     }
 
     @Test
@@ -90,7 +90,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getCadence()).isEqualTo((short) 82);
+        assertThat(converted.cadence()).isEqualTo((short) 82);
     }
 
     @Test
@@ -100,7 +100,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getTrackpoints()).isEmpty();
+        assertThat(converted.trackpoints()).isEmpty();
     }
 
     @Test
@@ -110,7 +110,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getNotes()).isNull();
+        assertThat(converted.notes()).isNull();
     }
 
     @Test
@@ -119,9 +119,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getAvgSpeed()).isEqualTo(2.2279999256134033);
-        assertThat(converted.getAvgRunCadence()).isEqualTo((short) 81);
-        assertThat(converted.getMaxRunCadence()).isEqualTo((short) 114);
+        assertThat(converted.avgSpeed()).isEqualTo(2.2279999256134033);
+        assertThat(converted.avgRunCadence()).isEqualTo((short) 81);
+        assertThat(converted.maxRunCadence()).isEqualTo((short) 114);
     }
 
     @Test
@@ -130,7 +130,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getMaxRunCadence()).isNull();
+        assertThat(converted.maxRunCadence()).isNull();
         assertThat(capturedOutput.getOut()).contains(
                 "No LapExtension for lap with start time 2023-10-01T10:06:53Z"
         );
@@ -142,9 +142,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(tcdb.getActivities().getActivity().getFirst().getLap().getLast());
 
-        assertThat(converted.getAvgSpeed()).isNull();
-        assertThat(converted.getAvgRunCadence()).isNull();
-        assertThat(converted.getMaxRunCadence()).isNull();
+        assertThat(converted.avgSpeed()).isNull();
+        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.maxRunCadence()).isNull();
         assertThat(capturedOutput.getOut()).contains(
                 "Found unexpected type(s) of Lap extensions: [com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT]",
                 "No LapExtension for lap with start time 2023-11-02T05:56:58.000Z"
@@ -157,9 +157,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.getAvgSpeed()).isEqualTo(2.2279999256134033);
-        assertThat(converted.getAvgRunCadence()).isEqualTo((short) 81);
-        assertThat(converted.getMaxRunCadence()).isEqualTo((short) 114);
+        assertThat(converted.avgSpeed()).isEqualTo(2.2279999256134033);
+        assertThat(converted.avgRunCadence()).isEqualTo((short) 81);
+        assertThat(converted.maxRunCadence()).isEqualTo((short) 114);
         assertThat(capturedOutput.getOut()).contains(
                 "Unexpected amount of 2 LapExtensionTs for Lap 2023-11-02T05:15:29.000Z"
         );
@@ -169,7 +169,7 @@ class TcdbLapConverterTest {
     void ttbin2tcxFile_convert_trackpoints() throws JAXBException, IOException {
         ActivityLapT activityLapT = TestActivityProvider.getFirstLap("export_ttbin2tcx.tcx");
 
-        List<Trackpoint> trackpoints = tcdbLapConverter.convertLap(activityLapT).getTrackpoints();
+        List<Trackpoint> trackpoints = tcdbLapConverter.convertLap(activityLapT).trackpoints();
 
         assertThat(trackpoints).hasSize(131);
     }
@@ -178,7 +178,7 @@ class TcdbLapConverterTest {
     void noTrack_convert_empty() throws JAXBException, IOException {
         ActivityLapT activityLapT = TestActivityProvider.getFirstLap("export_garmin_track_deleted.tcx");
 
-        List<Trackpoint> trackpoints = tcdbLapConverter.convertLap(activityLapT).getTrackpoints();
+        List<Trackpoint> trackpoints = tcdbLapConverter.convertLap(activityLapT).trackpoints();
 
         assertThat(trackpoints).isEmpty();
     }

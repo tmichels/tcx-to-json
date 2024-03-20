@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,7 +34,7 @@ public class SupportedFilesTest {
         TrainingCenterDatabaseT tcdb = tcxParser.parse(lines);
         List<Run> run = tcdbRunConverter.convert(tcdb);
 
-        long count = run.getFirst().getLaps().stream().flatMap(l -> l.getTrackpoints().stream()).count();
+        long count = run.getFirst().laps().stream().flatMap(l -> l.trackpoints().stream()).count();
 
         assertThat(count).isEqualTo(expectedNrOfTrackpoints);
     }
@@ -43,12 +42,12 @@ public class SupportedFilesTest {
 
     public static Stream<Arguments> getTestFiles() {
         return Stream.of(
-            Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637),
-            Arguments.of("src/test/java/testfiles/export_strava.tcx",9638),
-            Arguments.of("src/test/java/testfiles/export_tomtom.tcx",2868),
-            Arguments.of("src/test/java/testfiles/export_ttbin2tcx.tcx",1354),
-            Arguments.of("src/test/java/testfiles/export_garmin_invalid_extensions.tcx",637),
-            Arguments.of("src/test/java/testfiles/export_garmin_track_deleted.tcx",493)
+                Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637),
+                Arguments.of("src/test/java/testfiles/export_strava.tcx", 9638),
+                Arguments.of("src/test/java/testfiles/export_tomtom.tcx", 2868),
+                Arguments.of("src/test/java/testfiles/export_ttbin2tcx.tcx", 1354),
+                Arguments.of("src/test/java/testfiles/export_garmin_invalid_extensions.tcx", 637),
+                Arguments.of("src/test/java/testfiles/export_garmin_track_deleted.tcx", 493)
         );
     }
 }
