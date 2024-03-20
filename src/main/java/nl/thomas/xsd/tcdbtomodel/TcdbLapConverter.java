@@ -9,6 +9,8 @@ import nl.thomas.xsd.model.Lap;
 import nl.thomas.xsd.model.Trackpoint;
 import org.springframework.stereotype.Component;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -26,14 +28,14 @@ public class TcdbLapConverter {
     Lap convertLap(ActivityLapT activityLapT) {
         Optional<ActivityLapExtensionT> activityLapExtensionT = getLapExtension(activityLapT);
         return new Lap(
-                TimeConverter.getStartDateTime(activityLapT.getStartTime()),
+                getStartDateTime(activityLapT),
                 activityLapT.getTotalTimeSeconds(),
                 activityLapT.getMaximumSpeed(),
                 activityLapT.getDistanceMeters(),
                 activityLapT.getCalories(),
                 getOptionalHrBpm(activityLapT.getAverageHeartRateBpm()),
                 getOptionalHrBpm(activityLapT.getMaximumHeartRateBpm()),
-                activityLapT.getIntensity().value(),
+                activityLapT.getIntensity() != null ? activityLapT.getIntensity().value() : null,
                 activityLapT.getCadence(),
                 activityLapT.getTriggerMethod(),
                 activityLapT.getNotes(),
@@ -60,13 +62,25 @@ public class TcdbLapConverter {
         return Optional.of(lapExtension.getFirst());
     }
 
+    private LocalDateTime getStartDateTime(ActivityLapT activityLapT) {
+        XMLGregorianCalendar startTime = activityLapT.getStartTime();
+        if (startTime == null) {
+            log.warn(
+                    "Lap with distance {} and {} total time seconds has no start time.",
+                    activityLapT.getDistanceMeters(),
+                    activityLapT.getTotalTimeSeconds());
+            return null;
+        }
+        return TimeConverter.getStartDateTime(activityLapT.getStartTime());
+    }
+
     private Short getOptionalHrBpm(HeartRateInBeatsPerMinuteT heartRateBpm) {
         return heartRateBpm == null ? null : heartRateBpm.getValue();
     }
 
     private List<Trackpoint> getTrackpoints(ActivityLapT activityLapT) {
-         return activityLapT.getTrack().stream() // Cannot be null, see generated class.
-                .map(TrackT::getTrackpoint) // Cannot be null, see generated class.
+        return activityLapT.getTrack().stream() // Cannot be null, see generated class and tests.
+                .map(TrackT::getTrackpoint) // Cannot be null, see generated class and tests.
                 .flatMap(Collection::stream)
                 .map(tcdbTrackpointConverter::convertTrackpoint)
                 .toList();

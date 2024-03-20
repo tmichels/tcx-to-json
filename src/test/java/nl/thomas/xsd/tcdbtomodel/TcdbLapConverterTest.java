@@ -183,4 +183,16 @@ class TcdbLapConverterTest {
         assertThat(trackpoints).isEmpty();
     }
 
+    @Test
+    void emptyLap_convert_nullSafe(CapturedOutput capturedOutput) {
+        ActivityLapT activityLapT = new ActivityLapT();
+
+        Lap lap = tcdbLapConverter.convertLap(activityLapT);
+
+        assertThat(lap).isNotNull();
+        assertThat(capturedOutput.getOut()).contains(
+                "No LapExtension for lap with start time null",
+                "Lap with distance 0.0 and 0.0 total time seconds has no start time.");
+    }
+
 }

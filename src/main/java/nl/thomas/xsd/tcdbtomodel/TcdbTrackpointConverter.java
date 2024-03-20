@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Trackpoint;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,35 +16,36 @@ import java.util.Optional;
 public class TcdbTrackpointConverter {
 
     Trackpoint convertTrackpoint(TrackpointT trackpointT) {
-        PositionT position = getPosition(trackpointT);
-        Optional<ActivityTrackpointExtensionT> trackpointExtensionT = getTrackpointExtension(trackpointT);
+        Optional<PositionT> position = getPosition(trackpointT);
+        ActivityTrackpointExtensionT trackpointExtension = getTrackpointExtension(trackpointT);
 
         return new Trackpoint(
-                TimeConverter.getStartDateTime(trackpointT.getTime()),
-                position != null ? position.getLatitudeDegrees() : null,
-                position != null ? position.getLongitudeDegrees() : null,
+                getTime(trackpointT),
+                position.isPresent() ? position.get().getLatitudeDegrees() : null,
+                position.isPresent() ? position.get().getLongitudeDegrees() : null,
                 trackpointT.getAltitudeMeters(),
                 trackpointT.getDistanceMeters(),
                 trackpointT.getHeartRateBpm() == null ? null : trackpointT.getHeartRateBpm().getValue(),
-                getCadence(trackpointT, trackpointExtensionT),
-                trackpointExtensionT.map(ActivityTrackpointExtensionT::getSpeed).orElse(null)
+                getCadence(trackpointT, trackpointExtension),
+                trackpointExtension.getSpeed()
         );
     }
 
-    private static PositionT getPosition(TrackpointT trackpointT) {
+    private Optional<PositionT> getPosition(TrackpointT trackpointT) {
         PositionT position = trackpointT.getPosition();
         if (position == null) {
             log.warn("No latitude and longitude available for trackpoint on {}", trackpointT.getTime());
+            return Optional.empty();
         }
-        return position;
+        return Optional.of(position);
     }
 
-    private static Optional<ActivityTrackpointExtensionT> getTrackpointExtension(TrackpointT trackpointT) {
+    private ActivityTrackpointExtensionT getTrackpointExtension(TrackpointT trackpointT) {
         List<Object> allExtensions = ExtensionConverter.getJaxbExtensions(trackpointT.getExtensions());
         List<ActivityTrackpointExtensionT> atpExtensions = ExtensionConverter.filterExtensionsOfType(allExtensions, ActivityTrackpointExtensionT.class);
         if (atpExtensions.isEmpty()) {
             log.warn("No TrackpointExtension for trackpoint on {}", trackpointT.getTime());
-            return Optional.empty();
+            return new ActivityTrackpointExtensionT();
         }
         if (atpExtensions.size() > 1) {
             log.warn("Unexpected amount of {} ActivityTrackpointExtensionT for Trackpoint on {}", atpExtensions.size(), trackpointT.getTime());
@@ -51,24 +53,29 @@ public class TcdbTrackpointConverter {
         if (atpExtensions.size() < allExtensions.size()) {
             log.warn("Unexpected type of Trackpoint extensions was found for Trackpoint on {}: {}", trackpointT.getTime(), allExtensions.stream().toList().stream().map((Object o) -> o.getClass().getName()).toList());
         }
-        return Optional.of(atpExtensions.getFirst());
+        return atpExtensions.getFirst();
     }
 
-    private static Short getCadence(TrackpointT trackpointT, Optional<ActivityTrackpointExtensionT> trackpointExtensionT) {
-        Short cadenceFromTp = trackpointT.getCadence();
-        Short cadenceFromExt = trackpointExtensionT.map(ActivityTrackpointExtensionT::getRunCadence).orElse(null);
+    private LocalDateTime getTime(TrackpointT trackpointT) {
+        if (trackpointT.getTime() == null) {
+            log.warn("Trackpoint with distance {} has no time", trackpointT.getDistanceMeters());
+            return null;
+        }
+        return TimeConverter.getStartDateTime(trackpointT.getTime());
+    }
 
-        if (cadenceFromExt != null && cadenceFromTp != null && !cadenceFromExt.equals(cadenceFromTp)) {
+    private Short getCadence(TrackpointT trackpointT, ActivityTrackpointExtensionT trackpointExtensionT) {
+        if (trackpointExtensionT.getRunCadence() != null && trackpointT.getCadence() != null && !trackpointExtensionT.getRunCadence().equals(trackpointT.getCadence())) {
             log.warn("Conflicting values for cadence in trackpoint on {}: extension: {}, trackpoint value: {}",
                     trackpointT.getTime(),
-                    cadenceFromExt,
-                    cadenceFromTp);
+                    trackpointExtensionT.getRunCadence(),
+                    trackpointT.getCadence());
         }
 
-        if (cadenceFromTp == null && cadenceFromExt != null) {
-            return cadenceFromExt;
+        if (trackpointT.getCadence() == null && trackpointExtensionT.getRunCadence() != null) {
+            return trackpointExtensionT.getRunCadence();
         } else {
-            return cadenceFromTp;
+            return trackpointT.getCadence();
         }
     }
 

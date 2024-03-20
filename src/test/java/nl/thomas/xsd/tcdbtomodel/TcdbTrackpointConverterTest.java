@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,5 +132,25 @@ class TcdbTrackpointConverterTest {
         Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
         assertThat(trackpoint.cadence()).isEqualTo((short) 4);
+    }
+
+    @Test
+    void newTrackpoint_getTime_canBeNull() {
+        TrackpointT trackpointT = new TrackpointT();
+        XMLGregorianCalendar time = trackpointT.getTime();
+        assertThat(time).isNull();
+    }
+
+    @Test
+    void emptyTrackpoint_convert_nullSafe(CapturedOutput capturedOutput) {
+        TrackpointT trackpointT = new TrackpointT();
+
+        Trackpoint trackpoint = tcdbTrackpointConverter.convertTrackpoint(trackpointT);
+
+        assertThat(trackpoint).isNotNull();
+        assertThat(capturedOutput.getOut()).contains(
+                "No latitude and longitude available for trackpoint on null",
+                "No TrackpointExtension for trackpoint on null",
+                "Trackpoint with distance null has no time");
     }
 }
