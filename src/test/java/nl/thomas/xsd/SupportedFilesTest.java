@@ -45,6 +45,7 @@ public class SupportedFilesTest {
                 Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637),
                 Arguments.of("src/test/java/testfiles/export_strava.tcx", 9638),
                 Arguments.of("src/test/java/testfiles/export_tomtom.tcx", 2868),
+                Arguments.of("src/test/java/testfiles/export_smashrun.tcx", 2860),
                 Arguments.of("src/test/java/testfiles/export_ttbin2tcx.tcx", 1354),
                 Arguments.of("src/test/java/testfiles/export_garmin_invalid_extensions.tcx", 637),
                 Arguments.of("src/test/java/testfiles/export_garmin_track_deleted.tcx", 493)
