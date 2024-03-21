@@ -1,6 +1,7 @@
 package nl.thomas.xsd;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
 import nl.thomas.xsd.model.Run;
@@ -29,20 +30,26 @@ public class TcxController {
         this.tcdbRunConverter = tcdbRunConverter;
     }
 
-    @PostMapping("/raw/file")
+    @PostMapping("/translation/path")
+    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A string with the file location of a tcx file. Absolute, or relative to the application such as src/test/java/testfiles/export_tomtom.tcx")
     public TrainingCenterDatabaseT fileForTcdb(@RequestBody String location) throws IOException, JAXBException {
         log.info("GET request to read {}", location);
         String fileContent = readFileContent(location);
         return parseContentToTcdb(fileContent);
     }
 
-    @PostMapping("/raw/file-content")
+    @PostMapping("/translation/file-content")
+    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
     public TrainingCenterDatabaseT getFromFileContentForTcdb(@RequestBody String fileContent) throws JAXBException {
         log.info("GET request to read text with {} characters", fileContent.length());
         return parseContentToTcdb(fileContent);
     }
 
-    @PostMapping("/model/file")
+    @PostMapping("/simplified/path")
+    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A string with the file location of a tcx file. Absolute, or relative to the application such as src/test/java/testfiles/export_tomtom.tcx")
     public List<Run> fileForModel(@RequestBody String location) throws IOException, JAXBException {
         log.info("GET request to read {}", location);
         String fileContent = readFileContent(location);
@@ -50,7 +57,9 @@ public class TcxController {
         return convertTcdb(tcdb);
     }
 
-    @PostMapping("/model/file-content")
+    @PostMapping("/simplified/file-content")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
+    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
     public List<Run> getFromFileContentForModel(@RequestBody String fileContent) throws JAXBException {
         log.info("GET request to read text with {} characters", fileContent.length());
         TrainingCenterDatabaseT tcdb = parseContentToTcdb(fileContent);
