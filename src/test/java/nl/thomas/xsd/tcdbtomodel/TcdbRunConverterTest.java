@@ -121,8 +121,8 @@ class TcdbRunConverterTest {
         TestActivityProvider.getFirstActivity(tcdb).setId(null);
 
         assertThatThrownBy(() -> tcdbRunConverter.convert(tcdb))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Date/time was null. Maybe not correctly parsed to XMLGregorianCalendar? Input format of TCX should be like this: 2024-03-03T06:56:25Z");
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Date/time was null. Input format of TCX should be like this: 2024-03-03T06:56:25Z or this 2024-03-03T06:56:25");
     }
 
     @Test
