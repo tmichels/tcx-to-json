@@ -61,7 +61,7 @@ public class TcdbTrackpointConverter {
             log.warn("Trackpoint with distance {} has no time", trackpointT.getDistanceMeters());
             return null;
         }
-        return TimeConverter.getStartDateTime(trackpointT.getTime());
+        return TimeConverter.convert(trackpointT.getTime());
     }
 
     private Short getCadence(TrackpointT trackpointT, ActivityTrackpointExtensionT trackpointExtensionT) {

@@ -71,7 +71,7 @@ public class TcdbLapConverter {
                     activityLapT.getTotalTimeSeconds());
             return null;
         }
-        return TimeConverter.getStartDateTime(activityLapT.getStartTime());
+        return TimeConverter.convert(activityLapT.getStartTime());
     }
 
     private Short getOptionalHrBpm(HeartRateInBeatsPerMinuteT heartRateBpm) {

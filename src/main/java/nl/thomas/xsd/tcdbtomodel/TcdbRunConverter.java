@@ -34,7 +34,7 @@ public class TcdbRunConverter {
 
     private Run convertActivityToRun(ActivityT activityT) {
         return new Run(
-                TimeConverter.getStartDateTime(activityT.getId()),
+                TimeConverter.convert(activityT.getId()),
                 activityT.getCreator() != null ? activityT.getCreator().getName() : null,
                 activityT.getSport(),
                 getLaps(activityT));
