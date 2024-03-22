@@ -1,6 +1,10 @@
 package nl.tmichels.tcxtojson.tcxtotcdb;
 
-public abstract class StravaCorrector {
+public final class StravaCorrector {
+
+    private StravaCorrector() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Strava TCX exports contain empty spaces as prefix. Without removing it, a SAXParseException will be thrown.

@@ -2,7 +2,11 @@ package nl.tmichels.tcxtojson.tcxtotcdb;
 
 import java.util.regex.Pattern;
 
-public abstract class TomTomCorrector {
+public final class TomTomCorrector {
+
+    private TomTomCorrector() {
+        throw new IllegalStateException("Utility class");
+    }
 
     /**
      * Exports from TomTom contain a systematic error: the objects in the ActivityExtensionv2.xsd schema are not prefixed

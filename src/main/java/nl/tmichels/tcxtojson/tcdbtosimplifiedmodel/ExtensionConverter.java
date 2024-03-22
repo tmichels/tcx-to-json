@@ -5,7 +5,11 @@ import jakarta.xml.bind.JAXBElement;
 
 import java.util.List;
 
-public class ExtensionConverter {
+public final class ExtensionConverter {
+
+    private ExtensionConverter() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static List<Object> getJaxbExtensions(ExtensionsT extensions) {
         return extensions == null ?

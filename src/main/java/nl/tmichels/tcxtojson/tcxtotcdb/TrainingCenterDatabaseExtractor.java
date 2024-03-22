@@ -5,7 +5,11 @@ import com.garmin.xmlschemas.trainingcenterdatabase.v2.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TrainingCenterDatabaseExtractor {
+public final class TrainingCenterDatabaseExtractor {
+
+    private TrainingCenterDatabaseExtractor() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static List<TrackpointT> extractTrackpoints(TrainingCenterDatabaseT trainingCenterDatabaseT) {
         List<ActivityLapT> activityLapTS = extractLaps(trainingCenterDatabaseT);
