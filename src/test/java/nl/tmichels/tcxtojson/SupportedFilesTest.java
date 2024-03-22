@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class SupportedFilesTest {
+class SupportedFilesTest {
 
     @Autowired
     TcxParser tcxParser;
@@ -40,7 +40,7 @@ public class SupportedFilesTest {
     }
 
 
-    public static Stream<Arguments> getTestFiles() {
+    private static Stream<Arguments> getTestFiles() {
         return Stream.of(
                 Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637),
                 Arguments.of("src/test/java/testfiles/export_strava.tcx", 9638),
