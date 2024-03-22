@@ -2,9 +2,8 @@
 
 <p><a href="https://en.wikipedia.org/wiki/Training_Center_XML">TCX files</a> are XML files that are widely used to track
     sport activities. All major sport platforms such as <a href="http://www.strava.com">Strava</a>,
-    <a href="https://en-gb.smashrun.com/">Smashrun</a>, <a href="https://mysports.tomtom.com">TomTom</a> and
-    <a href="https://sports.garmin.com">Garmin</a> offer the ability to export activities captured by smartphone or
-    sports watches in the form of TCX files.</p>
+    <a href="https://en-gb.smashrun.com/">Smashrun</a>, and <a href="https://sports.garmin.com">Garmin</a> offer the 
+    ability to export activities captured by smartphone or sports watches in the form of TCX files.</p>
 <p>
 
 This application reads .tcx files that comply with the official xml specifications found
@@ -36,7 +35,6 @@ An example of the simplified model:
         "intensity": "Active",
         "cadence": null,
         "triggerMethod": "MANUAL",
-        "notes": null,
         "avgSpeed": 2.388000011444092,
         "avgRunCadence": 81,
         "maxRunCadence": 85,

@@ -17,7 +17,7 @@ public class OpenAPIConfig {
                         .description(
                                 "This application reads .tcx files that comply with the official xml specifications found " +
                                         "here https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd, and " +
-                                        "and here https://www8.garmin.com/xmlschemas/ActivityExtensionv2.xsd and returns " +
+                                        "here https://www8.garmin.com/xmlschemas/ActivityExtensionv2.xsd and returns " +
                                         "them as JSON." +
                                         "<br>" +
                                         "<br>" +

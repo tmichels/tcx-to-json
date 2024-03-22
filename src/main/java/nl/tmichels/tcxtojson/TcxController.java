@@ -31,7 +31,7 @@ public class TcxController {
     }
 
     @PostMapping("/translation/path")
-    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
+    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML) from file reference")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description =
             "A string with the file path to a tcx file. Absolute, or relative to the " +
                     "application such as src/test/java/testfiles/export_tomtom.tcx. Configure your volumes when run in " +
@@ -44,7 +44,7 @@ public class TcxController {
     }
 
     @PostMapping("/translation/file-content")
-    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
+    @Operation(summary = "Get literal translation of XML to JSON (same structure as XML) from content of TCX file.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
     public TrainingCenterDatabaseT fileContentToTcdb(@RequestBody String fileContent) throws JAXBException {
         log.info("Received POST request to read text with {} characters", fileContent.length());
@@ -52,7 +52,7 @@ public class TcxController {
     }
 
     @PostMapping("/simplified/path")
-    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
+    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity from file reference.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description =
             "A string with the file path to a tcx file. Absolute, or relative to the " +
                     "application such as src/test/java/testfiles/export_tomtom.tcx. Configure your volumes when run in " +
@@ -67,7 +67,7 @@ public class TcxController {
 
     @PostMapping("/simplified/file-content")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
-    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
+    @Operation(summary = "Get a simplified (opinionated) model of a TCX activity from content of TCX file.")
     public List<Run> contentToSimplified(@RequestBody String fileContent) throws JAXBException {
         log.info("Received POST request to read text with {} characters", fileContent.length());
         TrainingCenterDatabaseT tcdb = parseContentToTcdb(fileContent);
