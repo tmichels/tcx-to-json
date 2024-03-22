@@ -5,6 +5,6 @@ COPY ./src ./src
 RUN mvn package
 
 FROM amazoncorretto:21
-WORKDIR opt/backend-xsd-reader/target
-COPY --from=maven opt/target/backend-xsd-reader-1.0.jar .
-CMD java -jar backend-xsd-reader-1.0.jar
+WORKDIR opt/tcx-to-json/target
+COPY --from=maven opt/target/tcx-to-json-1.0.jar .
+CMD java -jar tcx-to-json-1.0.jar

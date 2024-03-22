@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>nl.thomas</groupId>
-    <artifactId>backend-xsd-reader</artifactId>
+    <artifactId>tcx-to-json</artifactId>
     <version>1.0</version>
     <name>xsd</name>
     <description>xsd</description>
