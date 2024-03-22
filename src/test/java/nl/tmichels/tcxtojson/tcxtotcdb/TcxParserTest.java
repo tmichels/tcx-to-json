@@ -95,13 +95,13 @@ class TcxParserTest {
         return trainingCenterDatabaseT
                 .getActivities()
                 .getActivity()
-                .get(0)
+                .getFirst()
                 .getLap()
-                .get(0)
+                .getFirst()
                 .getTrack()
-                .get(0)
+                .getFirst()
                 .getTrackpoint()
-                .get(0)
+                .getFirst()
                 .getTime() // The class generated on the basis of the SXD is XMLGregorianCalendar
                 .toGregorianCalendar()
                 .toZonedDateTime();

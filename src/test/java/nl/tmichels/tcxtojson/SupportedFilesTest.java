@@ -34,7 +34,7 @@ class SupportedFilesTest {
         TrainingCenterDatabaseT tcdb = tcxParser.parse(lines);
         List<Run> run = tcdbRunConverter.convert(tcdb);
 
-        long count = run.getFirst().laps().stream().flatMap(l -> l.trackpoints().stream()).count();
+        long count = run.getFirst().laps().stream().mapToLong(l -> l.trackpoints().size()).sum();
 
         assertThat(count).isEqualTo(expectedNrOfTrackpoints);
     }
