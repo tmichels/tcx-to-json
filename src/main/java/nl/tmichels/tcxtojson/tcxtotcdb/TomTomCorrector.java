@@ -8,7 +8,7 @@ public abstract class TomTomCorrector {
      * Exports from TomTom contain a systematic error: the objects in the ActivityExtensionv2.xsd schema are not prefixed
      * with the reference to that namespace. E.g. instead of <x:Speed>, TomTom export contains <Speed>.
      */
-    public static String correct(String tcxContent) {
+    static String correct(String tcxContent) {
         return correctSpeedTag(tcxContent);
     }
 
