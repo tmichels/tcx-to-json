@@ -32,27 +32,35 @@ public class TcxController {
 
     @PostMapping("/translation/path")
     @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A string with the file location of a tcx file. Absolute, or relative to the application such as src/test/java/testfiles/export_tomtom.tcx")
-    public TrainingCenterDatabaseT fileForTcdb(@RequestBody String location) throws IOException, JAXBException {
-        log.info("GET request to read {}", location);
-        String fileContent = readFileContent(location);
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description =
+            "A string with the file path to a tcx file. Absolute, or relative to the " +
+                    "application such as src/test/java/testfiles/export_tomtom.tcx. Configure your volumes when run in " +
+                    "Docker and use path available in Docker container.")
+    public TrainingCenterDatabaseT pathToTcdb(@RequestBody String path) throws IOException, JAXBException {
+        Path absolutePath = Path.of(path).toAbsolutePath();
+        log.info("Received POST request to read {}", absolutePath);
+        String fileContent = readFileContent(absolutePath);
         return parseContentToTcdb(fileContent);
     }
 
     @PostMapping("/translation/file-content")
     @Operation(summary = "Get literal translation of XML to JSON (same structure as XML)")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
-    public TrainingCenterDatabaseT getFromFileContentForTcdb(@RequestBody String fileContent) throws JAXBException {
-        log.info("GET request to read text with {} characters", fileContent.length());
+    public TrainingCenterDatabaseT fileContentToTcdb(@RequestBody String fileContent) throws JAXBException {
+        log.info("Received POST request to read text with {} characters", fileContent.length());
         return parseContentToTcdb(fileContent);
     }
 
     @PostMapping("/simplified/path")
     @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A string with the file location of a tcx file. Absolute, or relative to the application such as src/test/java/testfiles/export_tomtom.tcx")
-    public List<Run> fileForModel(@RequestBody String location) throws IOException, JAXBException {
-        log.info("GET request to read {}", location);
-        String fileContent = readFileContent(location);
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description =
+            "A string with the file path to a tcx file. Absolute, or relative to the " +
+                    "application such as src/test/java/testfiles/export_tomtom.tcx. Configure your volumes when run in " +
+                    "Docker and use path available in Docker container.")
+    public List<Run> pathToSimplified(@RequestBody String path) throws IOException, JAXBException {
+        Path absolutePath = Path.of(path).toAbsolutePath();
+        log.info("Received POST request to read {}", absolutePath);
+        String fileContent = readFileContent(absolutePath);
         TrainingCenterDatabaseT tcdb = parseContentToTcdb(fileContent);
         return convertTcdb(tcdb);
     }
@@ -60,14 +68,14 @@ public class TcxController {
     @PostMapping("/simplified/file-content")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The complete content of a tcx file.")
     @Operation(summary = "Get a simplified (opinionated) model of a TCX activity.")
-    public List<Run> getFromFileContentForModel(@RequestBody String fileContent) throws JAXBException {
-        log.info("GET request to read text with {} characters", fileContent.length());
+    public List<Run> contentToSimplified(@RequestBody String fileContent) throws JAXBException {
+        log.info("Received POST request to read text with {} characters", fileContent.length());
         TrainingCenterDatabaseT tcdb = parseContentToTcdb(fileContent);
         return convertTcdb(tcdb);
     }
 
-    private String readFileContent(String location) throws IOException {
-        List<String> lines = Files.readAllLines(Path.of(location));
+    private String readFileContent(Path absolutePath) throws IOException {
+        List<String> lines = Files.readAllLines(absolutePath);
         return String.join("", lines);
     }
 

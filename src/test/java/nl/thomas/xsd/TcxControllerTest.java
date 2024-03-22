@@ -12,6 +12,7 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,37 +30,41 @@ class TcxControllerTest {
     private TcdbRunConverter tcdbRunConverter;
 
     @Test
-    void path_readPathForTcdb_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
-        tcxController.fileForTcdb("src/test/java/testfiles/invalidxml.txt");
+    void path_pathToTcdb_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
+        String relativePath = "src/test/java/testfiles/invalidxml.txt";
 
-        assertThat(capturedOutput.getOut()).contains("GET request to read src/test/java/testfiles/invalidxml.txt");
+        tcxController.pathToTcdb(relativePath);
+
+        assertThat(capturedOutput.getOut()).contains("Received POST request to read " + Path.of(relativePath).toAbsolutePath());
         verify(tcxParser).parse("Dit bestandis geenTCX bestand");
         verifyNoInteractions(tcdbRunConverter);
     }
 
     @Test
-    void content_readContentForTcdb_contentToParser(CapturedOutput capturedOutput) throws JAXBException {
-        tcxController.getFromFileContentForTcdb("dit is TCX tekst");
+    void content_contentToTcdb_contentToParser(CapturedOutput capturedOutput) throws JAXBException {
+        tcxController.fileContentToTcdb("dit is TCX tekst");
 
-        assertThat(capturedOutput.getOut()).contains("GET request to read text with 16 characters");
+        assertThat(capturedOutput.getOut()).contains("Received POST request to read text with 16 characters");
         verify(tcxParser).parse("dit is TCX tekst");
         verifyNoInteractions(tcdbRunConverter);
     }
 
     @Test
-    void path_readPathForModel_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
-        tcxController.fileForModel("src/test/java/testfiles/invalidxml.txt");
+    void path_pathToSimplified_contentToParser(CapturedOutput capturedOutput) throws JAXBException, IOException {
+        String relativePath = "src/test/java/testfiles/invalidxml.txt";
 
-        assertThat(capturedOutput.getOut()).contains("GET request to read src/test/java/testfiles/invalidxml.txt");
+        tcxController.pathToSimplified(relativePath);
+
+        assertThat(capturedOutput.getOut()).contains("Received POST request to read " + Path.of(relativePath).toAbsolutePath());
         verify(tcxParser).parse("Dit bestandis geenTCX bestand");
         verify(tcdbRunConverter).convert(any());
     }
 
     @Test
-    void content_readContentForModel_contentToParser(CapturedOutput capturedOutput) throws JAXBException {
-        tcxController.getFromFileContentForModel("dit is TCX tekst");
+    void content_contentToSimplified_contentToParser(CapturedOutput capturedOutput) throws JAXBException {
+        tcxController.contentToSimplified("dit is TCX tekst");
 
-        assertThat(capturedOutput.getOut()).contains("GET request to read text with 16 characters");
+        assertThat(capturedOutput.getOut()).contains("Received POST request to read text with 16 characters");
         verify(tcxParser).parse("dit is TCX tekst");
         verify(tcdbRunConverter).convert(any());
     }
