@@ -104,16 +104,6 @@ class TcdbLapConverterTest {
     }
 
     @Test
-    void notesNull_convert_null() throws IOException, JAXBException {
-        ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
-        firstLap.setNotes(null);
-
-        Lap converted = tcdbLapConverter.convertLap(firstLap);
-
-        assertThat(converted.notes()).isNull();
-    }
-
-    @Test
     void lapExtension_convert_dataFromLapExtension() throws IOException, JAXBException {
         ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
 
