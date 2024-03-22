@@ -1,7 +1,7 @@
 package nl.tmichels.tcxtojson;
 
 import jakarta.xml.bind.JAXBException;
-import nl.tmichels.tcxtojson.tcdbtomodel.TcdbRunConverter;
+import nl.tmichels.tcxtojson.tcdbtosimplifiedmodel.TcdbRunConverter;
 import nl.tmichels.tcxtojson.tcxtotcdb.TcxParser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

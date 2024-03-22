@@ -1,10 +1,10 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import lombok.extern.slf4j.Slf4j;
-import nl.tmichels.tcxtojson.model.Lap;
-import nl.tmichels.tcxtojson.model.Run;
+import nl.tmichels.tcxtojson.simplifiedmodel.Lap;
+import nl.tmichels.tcxtojson.simplifiedmodel.Run;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

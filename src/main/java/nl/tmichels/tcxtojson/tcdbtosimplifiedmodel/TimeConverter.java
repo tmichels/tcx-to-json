@@ -1,4 +1,4 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import lombok.extern.slf4j.Slf4j;
 

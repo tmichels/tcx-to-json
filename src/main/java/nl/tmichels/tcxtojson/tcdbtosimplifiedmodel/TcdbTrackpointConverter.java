@@ -1,10 +1,10 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.PositionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackpointT;
 import lombok.extern.slf4j.Slf4j;
-import nl.tmichels.tcxtojson.model.Trackpoint;
+import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

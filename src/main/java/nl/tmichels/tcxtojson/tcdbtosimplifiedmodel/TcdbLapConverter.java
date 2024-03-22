@@ -1,12 +1,12 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.HeartRateInBeatsPerMinuteT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackT;
 import lombok.extern.slf4j.Slf4j;
-import nl.tmichels.tcxtojson.model.Lap;
-import nl.tmichels.tcxtojson.model.Trackpoint;
+import nl.tmichels.tcxtojson.simplifiedmodel.Lap;
+import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
 import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;

@@ -1,4 +1,4 @@
-package nl.tmichels.tcxtojson.model;
+package nl.tmichels.tcxtojson.simplifiedmodel;
 
 import java.time.LocalDateTime;
 

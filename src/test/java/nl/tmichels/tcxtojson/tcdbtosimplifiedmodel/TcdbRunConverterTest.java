@@ -1,8 +1,8 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.*;
 import jakarta.xml.bind.JAXBException;
-import nl.tmichels.tcxtojson.model.Run;
+import nl.tmichels.tcxtojson.simplifiedmodel.Run;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

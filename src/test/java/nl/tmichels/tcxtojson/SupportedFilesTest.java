@@ -2,8 +2,8 @@ package nl.tmichels.tcxtojson;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
 import jakarta.xml.bind.JAXBException;
-import nl.tmichels.tcxtojson.model.Run;
-import nl.tmichels.tcxtojson.tcdbtomodel.TcdbRunConverter;
+import nl.tmichels.tcxtojson.simplifiedmodel.Run;
+import nl.tmichels.tcxtojson.tcdbtosimplifiedmodel.TcdbRunConverter;
 import nl.tmichels.tcxtojson.tcxtotcdb.TcxParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

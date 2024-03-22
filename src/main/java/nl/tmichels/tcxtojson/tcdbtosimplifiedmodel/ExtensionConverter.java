@@ -1,4 +1,4 @@
-package nl.tmichels.tcxtojson.tcdbtomodel;
+package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import jakarta.xml.bind.JAXBElement;
