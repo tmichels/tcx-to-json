@@ -10,7 +10,7 @@ import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
 import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +35,7 @@ public class TcdbLapConverter {
                 activityLapT.getCalories(),
                 getOptionalHrBpm(activityLapT.getAverageHeartRateBpm()),
                 getOptionalHrBpm(activityLapT.getMaximumHeartRateBpm()),
-                activityLapT.getIntensity() != null ? activityLapT.getIntensity().value() : null,
+                activityLapT.getIntensity() != null ? activityLapT.getIntensity() : null,
                 activityLapT.getCadence(),
                 activityLapT.getTriggerMethod(),
                 activityLapExtensionT.map(ActivityLapExtensionT::getAvgSpeed).orElse(null),
@@ -61,7 +61,7 @@ public class TcdbLapConverter {
         return Optional.of(lapExtension.getFirst());
     }
 
-    private LocalDateTime getStartDateTime(ActivityLapT activityLapT) {
+    private ZonedDateTime getStartDateTime(ActivityLapT activityLapT) {
         XMLGregorianCalendar startTime = activityLapT.getStartTime();
         if (startTime == null) {
             log.warn(

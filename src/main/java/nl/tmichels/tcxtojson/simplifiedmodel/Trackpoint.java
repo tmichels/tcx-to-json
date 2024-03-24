@@ -1,9 +1,9 @@
 package nl.tmichels.tcxtojson.simplifiedmodel;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record Trackpoint(
-        LocalDateTime utc,
+        ZonedDateTime timeStamp,
         Double latitude,
         Double longitude,
         Double altitudeMeters,

@@ -151,6 +151,6 @@ class TcdbTrackpointConverterTest {
         assertThat(capturedOutput.getOut()).contains(
                 "No latitude and longitude available for trackpoint on null",
                 "No TrackpointExtension for trackpoint on null",
-                "Trackpoint with distance null has no time");
+                "Trackpoint with distance null has no timeStamp");
     }
 }

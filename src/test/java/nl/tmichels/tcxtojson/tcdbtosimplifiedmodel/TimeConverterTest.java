@@ -10,6 +10,9 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,9 +47,9 @@ class TimeConverterTest {
                 .newXMLGregorianCalendar("2024-03-22T12:44:21Z");
         assertThat(xmlGregorianCalendar.getTimezone()).isZero();
 
-        LocalDateTime converted = TimeConverter.convert(xmlGregorianCalendar);
+        ZonedDateTime converted = TimeConverter.convert(xmlGregorianCalendar);
 
-        assertThat(converted).isEqualTo(LocalDateTime.of(2024, 3, 22, 12, 44, 21));
+        assertThat(converted).isEqualTo(ZonedDateTime.of(LocalDateTime.of(2024, 3, 22, 12, 44, 21), ZoneId.of(ZoneOffset.UTC.toString())));
     }
 
     @Test
@@ -56,9 +59,9 @@ class TimeConverterTest {
                 .newXMLGregorianCalendar("2024-03-22T12:44:21");
         assertThat(xmlGregorianCalendar.getTimezone()).isEqualTo(DatatypeConstants.FIELD_UNDEFINED);
 
-        LocalDateTime converted = TimeConverter.convert(xmlGregorianCalendar);
+        ZonedDateTime converted = TimeConverter.convert(xmlGregorianCalendar);
 
-        assertThat(converted).isEqualTo(LocalDateTime.of(2024, 3, 22, 12, 44, 21));
+        assertThat(converted).isEqualTo(ZonedDateTime.of(LocalDateTime.of(2024, 3, 22, 12, 44, 21), ZoneId.of(ZoneOffset.UTC.toString())));
         assertThat(capturedOutput.getOut()).contains("Provided XML date 2024-03-22T12:44:21 contains no timezone indication, UTC is assumed.");
     }
 

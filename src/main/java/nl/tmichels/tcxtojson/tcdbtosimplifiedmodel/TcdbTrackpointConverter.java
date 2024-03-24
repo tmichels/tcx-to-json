@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,9 +56,9 @@ public class TcdbTrackpointConverter {
         return atpExtensions.getFirst();
     }
 
-    private LocalDateTime getTime(TrackpointT trackpointT) {
+    private ZonedDateTime getTime(TrackpointT trackpointT) {
         if (trackpointT.getTime() == null) {
-            log.warn("Trackpoint with distance {} has no time", trackpointT.getDistanceMeters());
+            log.warn("Trackpoint with distance {} has no timeStamp", trackpointT.getDistanceMeters());
             return null;
         }
         return TimeConverter.convert(trackpointT.getTime());

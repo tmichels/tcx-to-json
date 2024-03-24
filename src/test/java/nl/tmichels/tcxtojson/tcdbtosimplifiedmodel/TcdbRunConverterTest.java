@@ -13,6 +13,9 @@ import org.springframework.boot.test.system.OutputCaptureExtension;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,7 +115,7 @@ class TcdbRunConverterTest {
         List<Run> converted = tcdbRunConverter.convert(tcdb);
         Run actualRun = converted.getFirst();
 
-        assertThat(actualRun.startUtcDateTime()).isEqualTo(LocalDateTime.of(2024,3,3,6,56,25));
+        assertThat(actualRun.start()).isEqualTo(ZonedDateTime.of(LocalDateTime.of(2024, 3, 3, 6, 56, 25), ZoneId.of(ZoneOffset.UTC.toString())));
     }
 
     @Test
@@ -131,7 +134,7 @@ class TcdbRunConverterTest {
 
         Run converted = tcdbRunConverter.convert(tcdb).getFirst();
 
-        assertThat(converted.startUtcDateTime()).isEqualTo("2023-11-02T05:15:29.000");
+        assertThat(converted.start()).isEqualTo("2023-11-02T05:15:29.000Z");
         assertThat(converted.creatorName()).isEqualTo("Forerunner 245 Music");
         assertThat(converted.sport()).isEqualTo(SportT.RUNNING);
         assertThat(converted.laps()).hasSize(6);
