@@ -42,7 +42,7 @@ class SupportedFilesTest {
 
     private static Stream<Arguments> getTestFiles() {
         return Stream.of(
-                Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637),
+                Arguments.of("src/test/java/testfiles/export_garmin.tcx", 2133),
                 Arguments.of("src/test/java/testfiles/export_strava.tcx", 9638),
                 Arguments.of("src/test/java/testfiles/export_tomtom.tcx", 2868),
                 Arguments.of("src/test/java/testfiles/export_smashrun.tcx", 2860),

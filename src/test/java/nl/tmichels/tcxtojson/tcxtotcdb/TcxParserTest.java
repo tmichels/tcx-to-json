@@ -77,7 +77,7 @@ class TcxParserTest {
 
     private static Stream<Arguments> getTestFiles() {
         return Stream.of(
-                Arguments.of("src/test/java/testfiles/export_garmin.tcx", 637, "2023-11-02T05:15:29.000Z"),
+                Arguments.of("src/test/java/testfiles/export_garmin.tcx", 2133, "2024-02-11T10:00:11Z"),
                 Arguments.of("src/test/java/testfiles/export_strava.tcx", 9638, "2024-02-11T10:00:04Z"),
                 Arguments.of("src/test/java/testfiles/export_tomtom.tcx", 2868, "2023-10-01T10:06:53Z"),
                 Arguments.of("src/test/java/testfiles/export_smashrun.tcx", 2860, "2023-04-25T17:45:00.000Z"),

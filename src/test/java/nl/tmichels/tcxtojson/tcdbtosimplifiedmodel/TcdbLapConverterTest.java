@@ -109,9 +109,9 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.avgSpeed()).isEqualTo(2.2279999256134033);
-        assertThat(converted.avgRunCadence()).isEqualTo((short) 81);
-        assertThat(converted.maxRunCadence()).isEqualTo((short) 114);
+        assertThat(converted.avgSpeed()).isEqualTo(3.134999990463257);
+        assertThat(converted.avgRunCadence()).isEqualTo((short) 89);
+        assertThat(converted.maxRunCadence()).isEqualTo((short) 95);
     }
 
     @Test

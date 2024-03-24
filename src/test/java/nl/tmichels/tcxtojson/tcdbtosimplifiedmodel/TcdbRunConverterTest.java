@@ -134,10 +134,10 @@ class TcdbRunConverterTest {
 
         Run converted = tcdbRunConverter.convert(tcdb).getFirst();
 
-        assertThat(converted.start()).isEqualTo("2023-11-02T05:15:29.000Z");
+        assertThat(converted.start()).isEqualTo("2024-02-11T10:00:11.000Z");
         assertThat(converted.creatorName()).isEqualTo("Forerunner 245 Music");
         assertThat(converted.sport()).isEqualTo(SportT.RUNNING);
-        assertThat(converted.laps()).hasSize(6);
+        assertThat(converted.laps()).hasSize(31);
     }
 
 }
