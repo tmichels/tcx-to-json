@@ -17,38 +17,36 @@ should work on all TCX applications that comply with the xsd.
 <p>
 An example of the simplified model:
 
-[//]: # (TODO: Update)
 ```json
 [
   {
-    "startUtcDateTime": "2023-11-02T05:15:29",
+    "start": "2024-03-23T08:06:14Z",
     "creatorName": "Forerunner 245 Music",
     "sport": "RUNNING",
     "laps": [
       {
-        "lapStartUtc": "2023-11-02T05:15:29",
-        "totalTimeSeconds": 418.683,
-        "maximumSpeed": 2.687000036239624,
+        "lapStart": "2024-03-23T08:06:14Z",
+        "totalTimeSeconds": 360.784,
         "distanceMeters": 1000.0,
+        "maximumSpeed": 2.9670000076293945,
         "calories": 57,
-        "averageHeartRateBpm": 135,
-        "maximumHeartRateBpm": 152,
-        "intensity": "Active",
-        "cadence": null,
+        "averageHeartRateBpm": 142,
+        "maximumHeartRateBpm": 153,
+        "intensity": "ACTIVE",
+        "cadence": 79,
         "triggerMethod": "MANUAL",
-        "avgSpeed": 2.388000011444092,
-        "avgRunCadence": 81,
-        "maxRunCadence": 85,
+        "avgSpeed": 2.7720000743865967,
+        "maxRunCadence": 86,
         "trackpoints": [
           {
-            "utc": "2023-11-02T05:32:57",
-            "latitude": 52.090763272717595,
-            "longitude": 5.119876507669687,
-            "altitudeMeters": 12.399999618530273,
-            "distanceMeters": 2010.18994140625,
-            "heartRateBpm": 92,
-            "cadence": 82,
-            "speed": 0.8019999861717224
+            "timeStamp": "2024-03-23T08:06:14Z",
+            "latitude": 52.072810493409634,
+            "longitude": 5.120186051353812,
+            "altitudeMeters": 4.400000095367432,
+            "distanceMeters": 0.0,
+            "heartRateBpm": 109,
+            "cadence": 0,
+            "speed": 0.0
           }
         ]
       }
