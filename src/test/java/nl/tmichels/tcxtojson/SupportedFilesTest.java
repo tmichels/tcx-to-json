@@ -48,7 +48,9 @@ class SupportedFilesTest {
                 Arguments.of("src/test/java/testfiles/export_smashrun.tcx", 2860),
                 Arguments.of("src/test/java/testfiles/export_ttbin2tcx.tcx", 1354),
                 Arguments.of("src/test/java/testfiles/export_garmin_invalid_extensions.tcx", 637),
-                Arguments.of("src/test/java/testfiles/export_garmin_track_deleted.tcx", 493)
+                Arguments.of("src/test/java/testfiles/export_garmin_track_deleted.tcx", 493),
+                Arguments.of("src/test/java/testfiles/export_garmin_with_pauses.tcx", 1264),
+                Arguments.of("src/test/java/testfiles/export_tomtom_with_pauses.tcx", 4641)
         );
     }
 }
