@@ -92,7 +92,7 @@ class TcdbTrackpointConverterTest {
         Trackpoint trackpoints = tcdbTrackpointConverter.convertTrackpoint(firstTp);
 
         assertThat(trackpoints.cadence()).isEqualTo((short) 3);
-        assertThat(capturedOutput.getOut()).contains("Conflicting values for cadence in trackpoint on 2023-10-01T10:06:53Z: extension: 4, trackpoint value: 3");
+        assertThat(capturedOutput.getOut()).contains("Conflicting values for cadence in trackpoint or lap on 2023-10-01T10:06:53Z: extension: 4, core value: 3");
     }
 
     @Test

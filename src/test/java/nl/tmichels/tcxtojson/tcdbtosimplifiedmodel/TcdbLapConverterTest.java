@@ -1,8 +1,10 @@
 package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
+import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ExtensionsT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrainingCenterDatabaseT;
+import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import nl.tmichels.tcxtojson.simplifiedmodel.Lap;
 import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
@@ -35,7 +37,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.avgSpeed()).isNull();
-        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.cadence()).isNull();
         assertThat(converted.maxRunCadence()).isNull();
     }
 
@@ -57,7 +59,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.avgSpeed()).isNull();
-        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.cadence()).isNull();
         assertThat(converted.maxRunCadence()).isNull();
     }
 
@@ -69,7 +71,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.avgSpeed()).isNull();
-        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.cadence()).isNull();
         assertThat(converted.maxRunCadence()).isNull();
     }
 
@@ -77,10 +79,50 @@ class TcdbLapConverterTest {
     void cadenceNull_convert_null() throws IOException, JAXBException {
         ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
         firstLap.setCadence(null);
+        ActivityLapExtensionT activityLapExtensionT = ((JAXBElement<ActivityLapExtensionT>) firstLap.getExtensions().getAny().getFirst()).getValue();
+        activityLapExtensionT.setAvgRunCadence(null);
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.cadence()).isNull();
+    }
+
+    @Test
+    void cadenceExtensionValue_convert_extension() throws IOException, JAXBException {
+        ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
+        firstLap.setCadence(null);
+        ActivityLapExtensionT activityLapExtensionT = ((JAXBElement<ActivityLapExtensionT>) firstLap.getExtensions().getAny().getFirst()).getValue();
+        activityLapExtensionT.setAvgRunCadence((short) 5);
+
+        Lap converted = tcdbLapConverter.convertLap(firstLap);
+
+        assertThat(converted.cadence()).isEqualTo((short) 5);
+    }
+
+    @Test
+    void cadenceCoreValue_convert_core() throws IOException, JAXBException {
+        ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
+        firstLap.setCadence((short) 8);
+        ActivityLapExtensionT activityLapExtensionT = ((JAXBElement<ActivityLapExtensionT>) firstLap.getExtensions().getAny().getFirst()).getValue();
+        activityLapExtensionT.setAvgRunCadence(null);
+
+        Lap converted = tcdbLapConverter.convertLap(firstLap);
+
+        assertThat(converted.cadence()).isEqualTo((short) 8);
+    }
+
+    @Test
+    void cadenceCoreAndExtensionValue_convert_core(CapturedOutput capturedOutput) throws IOException, JAXBException {
+        ActivityLapT firstLap = TestActivityProvider.getFirstLap("export_garmin.tcx");
+        firstLap.setCadence((short) 8);
+        ActivityLapExtensionT activityLapExtensionT = ((JAXBElement<ActivityLapExtensionT>) firstLap.getExtensions().getAny().getFirst()).getValue();
+        activityLapExtensionT.setAvgRunCadence((short) 5);
+
+        Lap converted = tcdbLapConverter.convertLap(firstLap);
+
+        assertThat(converted.cadence()).isEqualTo((short) 8);
+        assertThat(capturedOutput.getOut()).contains("Conflicting values for cadence in trackpoint or lap " +
+                "on 2024-02-11T10:00:11.000Z: extension: 5, core value: 8");
     }
 
     @Test
@@ -110,7 +152,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.avgSpeed()).isEqualTo(3.134999990463257);
-        assertThat(converted.avgRunCadence()).isEqualTo((short) 89);
+        assertThat(converted.cadence()).isEqualTo((short) 89);
         assertThat(converted.maxRunCadence()).isEqualTo((short) 95);
     }
 
@@ -133,7 +175,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(tcdb.getActivities().getActivity().getFirst().getLap().getLast());
 
         assertThat(converted.avgSpeed()).isNull();
-        assertThat(converted.avgRunCadence()).isNull();
+        assertThat(converted.cadence()).isNull();
         assertThat(converted.maxRunCadence()).isNull();
         assertThat(capturedOutput.getOut()).contains(
                 "Found unexpected type(s) of Lap extensions: [com.garmin.xmlschemas.activityextension.v2.ActivityTrackpointExtensionT]",
@@ -148,7 +190,7 @@ class TcdbLapConverterTest {
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
         assertThat(converted.avgSpeed()).isEqualTo(2.2279999256134033);
-        assertThat(converted.avgRunCadence()).isEqualTo((short) 81);
+        assertThat(converted.cadence()).isEqualTo((short) 81);
         assertThat(converted.maxRunCadence()).isEqualTo((short) 114);
         assertThat(capturedOutput.getOut()).contains(
                 "Unexpected amount of 2 LapExtensionTs for Lap 2023-11-02T05:15:29.000Z"

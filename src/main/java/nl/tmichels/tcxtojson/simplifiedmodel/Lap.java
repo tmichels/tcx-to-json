@@ -18,7 +18,6 @@ public record Lap(
         Short cadence,
         TriggerMethodT triggerMethod,
         Double avgSpeed,
-        Short avgRunCadence,
         Short maxRunCadence,
         List<Trackpoint> trackpoints
 ) {

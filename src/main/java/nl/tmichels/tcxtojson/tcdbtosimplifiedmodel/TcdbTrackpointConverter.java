@@ -26,7 +26,10 @@ public class TcdbTrackpointConverter {
                 trackpointT.getAltitudeMeters(),
                 trackpointT.getDistanceMeters(),
                 trackpointT.getHeartRateBpm() == null ? null : trackpointT.getHeartRateBpm().getValue(),
-                getCadence(trackpointT, trackpointExtension),
+                CadenceConflictResolver.getCadence(
+                        trackpointT.getCadence(),
+                        trackpointExtension.getRunCadence(),
+                        trackpointT.getTime()),
                 trackpointExtension.getSpeed()
         );
     }
@@ -62,21 +65,6 @@ public class TcdbTrackpointConverter {
             return null;
         }
         return TimeConverter.convert(trackpointT.getTime());
-    }
-
-    private Short getCadence(TrackpointT trackpointT, ActivityTrackpointExtensionT trackpointExtensionT) {
-        if (trackpointExtensionT.getRunCadence() != null && trackpointT.getCadence() != null && !trackpointExtensionT.getRunCadence().equals(trackpointT.getCadence())) {
-            log.warn("Conflicting values for cadence in trackpoint on {}: extension: {}, trackpoint value: {}",
-                    trackpointT.getTime(),
-                    trackpointExtensionT.getRunCadence(),
-                    trackpointT.getCadence());
-        }
-
-        if (trackpointT.getCadence() == null && trackpointExtensionT.getRunCadence() != null) {
-            return trackpointExtensionT.getRunCadence();
-        } else {
-            return trackpointT.getCadence();
-        }
     }
 
 }

@@ -36,10 +36,12 @@ public class TcdbLapConverter {
                 getOptionalHrBpm(activityLapT.getAverageHeartRateBpm()),
                 getOptionalHrBpm(activityLapT.getMaximumHeartRateBpm()),
                 activityLapT.getIntensity() != null ? activityLapT.getIntensity() : null,
-                activityLapT.getCadence(),
+                CadenceConflictResolver.getCadence(
+                        activityLapT.getCadence(),
+                        activityLapExtensionT.map(ActivityLapExtensionT::getAvgRunCadence).orElse(null),
+                        activityLapT.getStartTime()),
                 activityLapT.getTriggerMethod(),
                 activityLapExtensionT.map(ActivityLapExtensionT::getAvgSpeed).orElse(null),
-                activityLapExtensionT.map(ActivityLapExtensionT::getAvgRunCadence).orElse(null),
                 activityLapExtensionT.map(ActivityLapExtensionT::getMaxRunCadence).orElse(null),
                 getTrackpoints(activityLapT)
         );
