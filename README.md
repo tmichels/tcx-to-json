@@ -66,12 +66,12 @@ Go to `http://localhost:8080/swagger-ui/index.html` to see the specifics of the 
 
 ### Run in docker
 
-Ensure Docker is installed. Run:
+Ensure podman is installed. Run:
 
-- `docker build -t tcx-to-json .`
-- `docker run -p 8080:8080 tcx-to-json`
+- `podman build -t tcx-to-json .`
+- `podman run -p 8080:8080 tcx-to-json`
 
 Go to `http://localhost:8080/swagger-ui/index.html` to see the required POST requests to read your TCX. Note that the
-endpoints with a reference to a file in the body will use that file reference to refer to a path inside the docker
-container. So when running in Docker it may be easier to use the endpoints with the content of the complete file
+endpoints with a reference to a file in the body will use that file reference to refer to a path inside the
+container. So when running in podman it may be easier to use the endpoints with the content of the complete file
 instead (or use a volume in which you have your tcx files available).
