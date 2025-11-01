@@ -11,10 +11,10 @@ import nl.tmichels.tcxtojson.simplifiedmodel.Trackpoint;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,10 +24,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith({MockitoExtension.class, OutputCaptureExtension.class})
 class TcdbLapConverterTest {
 
-    @InjectMocks
-    TcdbLapConverter tcdbLapConverter;
-    @Mock
-    TcdbTrackpointConverter tcdbTrackpointConverter;
+    private TcdbTrackpointConverter tcdbTrackpointConverter = new TcdbTrackpointConverter();
+    private TcdbLapConverter tcdbLapConverter = new TcdbLapConverter(tcdbTrackpointConverter);;
 
     @Test
     void avgHeartRateBpmNull_convert_null() throws IOException, JAXBException {
@@ -48,7 +46,7 @@ class TcdbLapConverterTest {
 
         Lap converted = tcdbLapConverter.convertLap(firstLap);
 
-        assertThat(converted.maximumHeartRateBpm()).isNull();
+        assertThat(converted.maximumHeartRateBpm()).isEqualTo((short) 158);
     }
 
     @Test
