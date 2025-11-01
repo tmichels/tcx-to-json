@@ -2,7 +2,6 @@ package nl.tmichels.tcxtojson.tcdbtosimplifiedmodel;
 
 import com.garmin.xmlschemas.activityextension.v2.ActivityLapExtensionT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.ActivityLapT;
-import com.garmin.xmlschemas.trainingcenterdatabase.v2.HeartRateInBeatsPerMinuteT;
 import com.garmin.xmlschemas.trainingcenterdatabase.v2.TrackT;
 import lombok.extern.slf4j.Slf4j;
 import nl.tmichels.tcxtojson.simplifiedmodel.Lap;
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -27,14 +24,15 @@ public class TcdbLapConverter {
 
     Lap convertLap(ActivityLapT activityLapT) {
         Optional<ActivityLapExtensionT> activityLapExtensionT = getLapExtension(activityLapT);
+        List<Trackpoint> trackpoints = getTrackpoints(activityLapT);
         return new Lap(
                 getStartDateTime(activityLapT),
                 activityLapT.getTotalTimeSeconds(),
                 activityLapT.getDistanceMeters(),
                 activityLapT.getMaximumSpeed(),
                 activityLapT.getCalories(),
-                getOptionalHrBpm(activityLapT.getAverageHeartRateBpm()),
-                getOptionalHrBpm(activityLapT.getMaximumHeartRateBpm()),
+                getHrBpmAvg(activityLapT, trackpoints),
+                getHrBpmMax(activityLapT, trackpoints),
                 activityLapT.getIntensity() != null ? activityLapT.getIntensity() : null,
                 CadenceConflictResolver.getCadence(
                         activityLapT.getCadence(),
@@ -43,7 +41,7 @@ public class TcdbLapConverter {
                 activityLapT.getTriggerMethod(),
                 activityLapExtensionT.map(ActivityLapExtensionT::getAvgSpeed).orElse(null),
                 activityLapExtensionT.map(ActivityLapExtensionT::getMaxRunCadence).orElse(null),
-                getTrackpoints(activityLapT)
+                trackpoints
         );
     }
 
@@ -75,8 +73,32 @@ public class TcdbLapConverter {
         return TimeConverter.convert(activityLapT.getStartTime());
     }
 
-    private Short getOptionalHrBpm(HeartRateInBeatsPerMinuteT heartRateBpm) {
-        return heartRateBpm == null ? null : heartRateBpm.getValue();
+    private Short getHrBpmAvg(ActivityLapT heartRateBpm, List<Trackpoint> trackpoints) {
+        if (heartRateBpm.getAverageHeartRateBpm() != null) {
+            return heartRateBpm.getAverageHeartRateBpm().getValue();
+        }
+        OptionalDouble average = trackpoints.stream()
+                .map(Trackpoint::heartRateBpm)
+                .filter(Objects::nonNull)
+                .mapToInt(Short::shortValue)
+                .average();
+        if (average.isPresent()) {
+            return (short) Math.round(average.getAsDouble());
+        } else {
+            return null;
+        }
+    }
+
+    private Short getHrBpmMax(ActivityLapT heartRateBpm, List<Trackpoint> trackpoints) {
+        if (heartRateBpm.getMaximumHeartRateBpm() != null) {
+            return heartRateBpm.getMaximumHeartRateBpm().getValue();
+        }
+        OptionalInt average = trackpoints.stream()
+                .map(Trackpoint::heartRateBpm)
+                .filter(Objects::nonNull)
+                .mapToInt(Short::shortValue)
+                .max();
+        return average.isPresent() ? (short) average.getAsInt() : null;
     }
 
     private List<Trackpoint> getTrackpoints(ActivityLapT activityLapT) {
