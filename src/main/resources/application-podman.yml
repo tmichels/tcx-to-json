@@ -1,0 +1,2 @@
+logging:
+  file.name: /logbestanden/@project.artifactId@

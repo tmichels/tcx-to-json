@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- Voor alle profielen op console loggen -->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<root level="INFO">
+		<appender-ref ref="CONSOLE"/>
+	</root>
+
+    <springProfile name="podman">
+		<!-- Alleen bij dit profiel (naast console) ook naar elastic loggen -->
+	    <include resource="co/elastic/logging/logback/boot/ecs-file-appender.xml" />
+	    <root level="INFO">
+	        <appender-ref ref="ECS_JSON_FILE"/>
+	    </root>
+    </springProfile>
+
+</configuration>

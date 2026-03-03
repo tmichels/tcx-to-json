@@ -1,7 +1,7 @@
 FROM docker.io/maven:3-eclipse-temurin-25-alpine AS maven
 WORKDIR opt
 COPY ./pom.xml ./pom.xml
-RUN mvn -B -q dependency:go-offline
+RUN mvn -B dependency:go-offline
 COPY ./src ./src
 RUN mvn -B -q package
 
