@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.3</version>
+        <version>4.1.1</version>
         <relativePath/>
     </parent>
 
@@ -15,12 +15,13 @@
     <version>1.0.0</version>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>27</java.version>
         <jakarta.xml.bind-api.version>4.0.4</jakarta.xml.bind-api.version>
         <jaxb-impl.version>4.0.6</jaxb-impl.version>
         <springdoc-openapi-starter-webmvc-ui.version>3.0.0</springdoc-openapi-starter-webmvc-ui.version>
         <jaxb2-maven-plugin.version>4.0.0</jaxb2-maven-plugin.version>
         <logback-ecs-encoder.version>1.7.0</logback-ecs-encoder.version>
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencies>
